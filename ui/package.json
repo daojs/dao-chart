@@ -1,0 +1,40 @@
+{
+  "name": "dao-chart",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/daojs/dao-chart",
+  "author": "Wei Wei <lyweiwei@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-import": "^1.6.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.8",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "react-hot-loader": "^4.0.0-beta.14",
+    "style-loader": "^0.19.1",
+    "webpack": "3.8.1",
+    "webpack-dev-server": "^2.10.1"
+  },
+  "dependencies": {
+    "antd": "^3.1.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "bluebird": "^3.5.1",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2"
+  }
+}
