@@ -3,6 +3,8 @@ import { HashRouter, Route } from 'react-router-dom';
 import echarts from 'echarts';
 import ReactEcharts from 'echarts-for-react';
 import daoTheme1 from './assets/DaoTheme1.json';
+import daoTheme2 from './assets/DaoTheme2.json';
+import daoTheme3 from './assets/DaoTheme3.json';
 import Hello from './component/hello';
 
 
@@ -10,6 +12,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     echarts.registerTheme('theme1', daoTheme1);
+    echarts.registerTheme('theme2', daoTheme2);
+    echarts.registerTheme('theme3', daoTheme3);
   }
 
   render() {
@@ -69,7 +73,7 @@ export default class App extends Component {
           >
             <ReactEcharts
               option={option}
-              theme="theme1"
+              theme="theme3"
               style={{ height: '400px', width: '100%' }}
             />
           </div>
