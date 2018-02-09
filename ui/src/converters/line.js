@@ -15,11 +15,13 @@ export default function (option, meta, data) {
       },
     },
     legend: {
-      data: ['销量', '预测'],
+      top: 0,
+      data: option.dataset.dimensions.slice(1),
     },
     yAxis: {},
     xAxis: { type: 'category' },
     series: (dimensions => dimensions.slice(1).map(dim => ({
+      name: dim,
       type: 'line',
       smooth: true,
       label: {

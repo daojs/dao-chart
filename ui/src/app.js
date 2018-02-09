@@ -46,46 +46,59 @@ export default class App extends Component {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'row',
-            position: 'fixed',
+            flexDirection: 'column',
             height: '100%',
             width: '100%',
-            marginTop: '20px',
-            overflow: 'auto',
           }}
         >
           <div
-            style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flex: 1,
+            }}
           >
-            <Route exact path="/" component={Hello} />
-          </div>
+            <div
+              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            >
+              <Route exact path="/" component={Hello} />
+            </div>
 
-          <div
-            style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-          >
-            <ReactEcharts
-              option={option}
-              theme="theme1"
-              style={{ height: '400px', width: '100%' }}
-            />
+            <div
+              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            >
+              <ReactEcharts
+                option={option}
+                theme="theme1"
+                style={{ height: '400px', width: '100%' }}
+              />
+            </div>
+            <div
+              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            >
+              <ReactEcharts
+                option={option}
+                theme="theme3"
+                style={{ height: '400px', width: '100%' }}
+              />
+            </div>
           </div>
           <div
-            style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flex: 1,
+            }}
           >
-            <ReactEcharts
-              option={option}
-              theme="theme3"
-              style={{ height: '400px', width: '100%' }}
-            />
-          </div>
-          <div
-            style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-          >
-            <DaoChart
-              meta={{ chartType: 'line', brief: 'blah blah' }}
-              theme="theme3"
-              style={{ height: '400px', width: '100%' }}
-            />
+            <div
+              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+            >
+              <DaoChart
+                meta={{ chartType: 'line', brief: 'blah blah' }}
+                theme="theme3"
+                style={{ height: '400px', width: '100%' }}
+              />
+            </div>
           </div>
         </div>
       </HashRouter>
