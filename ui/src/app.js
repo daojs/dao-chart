@@ -6,6 +6,7 @@ import daoTheme1 from './assets/DaoTheme1.json';
 import daoTheme2 from './assets/DaoTheme2.json';
 import daoTheme3 from './assets/DaoTheme3.json';
 import Hello from './component/hello';
+import DaoChart from './component/dao-chart';
 
 
 export default class App extends Component {
@@ -73,6 +74,15 @@ export default class App extends Component {
           >
             <ReactEcharts
               option={option}
+              theme="theme3"
+              style={{ height: '400px', width: '100%' }}
+            />
+          </div>
+          <div
+            style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
+          >
+            <DaoChart
+              meta={{ chartType: 'line' }}
               theme="theme3"
               style={{ height: '400px', width: '100%' }}
             />
