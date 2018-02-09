@@ -82,7 +82,7 @@ export default class App extends Component {
             style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
           >
             <DaoChart
-              meta={{ chartType: 'line' }}
+              meta={{ chartType: 'line', brief: 'blah blah' }}
               theme="theme3"
               style={{ height: '400px', width: '100%' }}
             />

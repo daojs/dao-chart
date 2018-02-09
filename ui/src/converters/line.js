@@ -1,27 +1,37 @@
-import Promise from 'bluebird';
+import _ from 'lodash';
 
-export default function (/* meta */) {
-  // fetch data from server side and convert
-  return Promise.resolve({
-    title: {
-      text: 'Title from converter',
+/* eslint-disable no-unused-vars, arrow-body-style */
+export default function (option, meta, data) {
+  return _.defaults({
+    tooltip: {
+      show: 'true',
+      trigger: 'item',
+      axisPointer: { // 坐标轴指示器，坐标轴触发有效
+        // type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+      },
+      formatter(params) {
+        const dimName = option.dataset.dimensions[params.seriesIndex + 1];
+        return `${dimName}: ${params.value[dimName]}`;
+      },
     },
-    tooltip: {},
     legend: {
       data: ['销量', '预测'],
     },
-    xAxis: {
-      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'],
-    },
     yAxis: {},
-    series: [{
-      name: '销量',
+    xAxis: { type: 'category' },
+    series: (dimensions => dimensions.slice(1).map(dim => ({
       type: 'line',
-      data: [5, 20, 36, 10, 10, 20],
-    }, {
-      name: '预测',
-      type: 'line',
-      data: [15, 30, 46, 20, 20, 30],
-    }],
-  });
+      smooth: true,
+      label: {
+        normal: {
+          show: true,
+          position: 'top',
+        },
+      },
+      encode: {
+        x: option.dataset.dimensions[0],
+        y: dim,
+      },
+    })))(option.dataset.dimensions),
+  }, option);
 }
