@@ -6,6 +6,7 @@
   "author": "Wei Wei <lyweiwei@outlook.com>",
   "license": "MIT",
   "scripts": {
+    "build": "webpack",
     "start": "webpack-dev-server",
     "storybook": "start-storybook -p 8082 -c .storybook"
   },
@@ -16,6 +17,7 @@
     "babel-plugin-import": "^1.6.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.8",
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",

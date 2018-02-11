@@ -1,3 +1,4 @@
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'source-map',
@@ -6,8 +7,8 @@ module.exports = {
     './src/index.js',
   ],
   output: {
-    path: `${__dirname}/dist`,
-    filename: './dist/bundle.js',
+    path: `${__dirname}/../target`,
+    filename: 'bundle.js',
   },
   devServer: {
     contentBase: './',
@@ -20,4 +21,7 @@ module.exports = {
       { test: /\.css/, loader: ['style-loader', 'css-loader'] },
     ],
   },
+  plugins: [
+    new CopyWebpackPlugin([{ from: './index.html', to: '../target' }]),
+  ],
 };
