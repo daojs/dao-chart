@@ -1,4 +1,4 @@
-export const line = {
+module.exports = {
   title: {
     text: 'Title from converter',
   },
