@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
 import convert from '../converters';
 
 export default class extends Component {
+  static defaultProps = {
+    meta: {},
+  }
+
+  static propTypes = {
+    meta: PropTypes.objectOf(PropTypes.any),
+  }
+
   constructor(props) {
     super(props);
     this.state = { option: {} };
