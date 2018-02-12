@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+// import { HashRouter, Route } from 'react-router-dom';
 import echarts from 'echarts';
 import ReactEcharts from 'echarts-for-react';
+import ReactGridLayout from 'react-grid-layout';
 import daoTheme1 from './assets/DaoTheme1.json';
 import daoTheme2 from './assets/DaoTheme2.json';
 import daoTheme3 from './assets/DaoTheme3.json';
-import Hello from './component/hello';
-import DaoChart from './component/dao-chart';
-
 
 export default class App extends Component {
   constructor(props) {
@@ -42,66 +40,30 @@ export default class App extends Component {
     };
 
     return (
-      <HashRouter>
+      <ReactGridLayout className="layout" cols={12} rowHeight={150} width={1200}>
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            width: '100%',
-          }}
+          key="a"
+          data-grid={{
+            x: 0, y: 0, w: 5, h: 2,
+        }}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flex: 1,
-            }}
-          >
-            <div
-              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-            >
-              <Route exact path="/" component={Hello} />
-            </div>
-
-            <div
-              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-            >
-              <ReactEcharts
-                option={option}
-                theme="theme1"
-                style={{ height: '400px', width: '100%' }}
-              />
-            </div>
-            <div
-              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-            >
-              <ReactEcharts
-                option={option}
-                theme="theme3"
-                style={{ height: '400px', width: '100%' }}
-              />
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flex: 1,
-            }}
-          >
-            <div
-              style={{ flexBasis: 0, flexGrow: 1, width: '100%' }}
-            >
-              <DaoChart
-                meta={{ chartType: 'line', brief: 'blah blah' }}
-                theme="theme3"
-                style={{ height: '400px', width: '100%' }}
-              />
-            </div>
-          </div>
+          <ReactEcharts
+            option={option}
+            theme="theme1"
+          />
         </div>
-      </HashRouter>
+        <div
+          key="b"
+          data-grid={{
+            x: 6, y: 0, w: 5, h: 2,
+        }}
+        >
+          <ReactEcharts
+            option={option}
+            theme="theme2"
+          />
+        </div>
+      </ReactGridLayout>
     );
   }
 }
