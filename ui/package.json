@@ -6,7 +6,7 @@
   "author": "Wei Wei <lyweiwei@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
+    "build": "yarn && webpack",
     "start": "webpack-dev-server",
     "lint": "eslint **/*.js",
     "storybook": "start-storybook -p 8082 -c .storybook"
