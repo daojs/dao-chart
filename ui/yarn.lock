@@ -2792,6 +2792,10 @@ echarts-for-react@^2.0.6:
   dependencies:
     element-resize-event "2.0.9"
 
+echarts-wordcloud@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/echarts-wordcloud/-/echarts-wordcloud-1.1.3.tgz#07b140c8ba76b19c317b43c310f3d5dc99289ff2"
+
 echarts@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.0.2.tgz#c405e9e479af982383c8ae2b5946e52d058c6220"
