@@ -6,5 +6,8 @@ node_js:
   - "6"
 cache: yarn
 
+install:
+  - cd ui && yarn
+
 script:
   - yarn run ui-gated
