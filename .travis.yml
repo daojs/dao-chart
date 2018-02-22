@@ -8,7 +8,7 @@ node_js:
 cache: yarn
 
 before_script:
-  - npm install -g webpack
+  - npm install eslint -g webpack
 
 script:
   - yarn run ui-gated
