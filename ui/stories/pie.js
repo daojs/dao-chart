@@ -13,8 +13,11 @@ const data = [
 
 storiesOf('Pie Chart', module)
   .add('pie chart - percent', () => (
-    <Pie percent={28} title="28%" subTitle="fast food" height={140} />
+    <Pie percent={28} title="28%" subTitle="fast food" />
   ))
   .add('pie chart - data', () => (
-    <Pie percent={28} />
+    <Pie data={data} title="$15781" subTitle="revenue" />
+  ))
+  .add('pie chart - data - hasLegend', () => (
+    <Pie hasLegend data={data} title="$15781" subTitle="revenue" />
   ));
