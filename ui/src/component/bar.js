@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
 
-export default class extends PureComponent {
+export default class Bar extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array).isRequired,
   }

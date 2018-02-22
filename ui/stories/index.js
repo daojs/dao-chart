@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Hello from '../src/component/hello';
-import BarComponent from '../src/component/bar';
+import Bar from '../src/component/bar';
 
 const source = [
   ['product', '2015', '2016', '2017'],
@@ -18,5 +18,5 @@ storiesOf('Hello', module)
 
 storiesOf('Bar Chart', module)
   .add('Simple bar', () => (
-    <BarComponent source={source} />
+    <Bar source={source} />
   ));
