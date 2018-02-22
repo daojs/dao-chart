@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "ui-gated": "cd ui && npm run build && npm run lint"
+  }
+}
