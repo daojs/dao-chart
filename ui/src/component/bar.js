@@ -30,7 +30,7 @@ export default class Bar extends PureComponent {
     };
 
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} {...this.props} />
     );
   }
 }

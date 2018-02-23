@@ -1,12 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Hello from '../src/component/hello';
 import Bar from '../src/component/bar';
 import Line from '../src/component/line';
 import Scatter from '../src/component/scatter';
 import Radar from '../src/component/radar';
 // 目前并非所有图表都支持 dataset。
 // 支持 dataset 的图表有： line、bar、pie、scatter、effectScatter、parallel、candlestick、map、funnel、custom
+
+require('./map');
 
 const source = [
   ['product', '2015', '2016', '2017'],
@@ -15,11 +16,6 @@ const source = [
   ['Cheese Cocoa', 86.4, 65.2, 82.5],
   ['Walnut Brownie', 72.4, 53.9, 39.1],
 ];
-
-storiesOf('Hello', module)
-  .add('hello', () => (
-    <Hello />
-  ));
 
 storiesOf('Bar Chart', module)
   .add('Simple bar', () => (
