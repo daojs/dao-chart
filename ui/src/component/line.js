@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
 
-export default class Bar extends PureComponent {
+export default class Line extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array).isRequired,
   }
@@ -16,21 +16,28 @@ export default class Bar extends PureComponent {
 
     const option = {
       legend: {},
-      tooltip: {},
+      tooltip: {
+        trigger: 'axis',
+      },
       dataset: {
         source: this.props.source,
         dimensions,
       },
-      yAxis: {},
-      xAxis: { type: 'category' },
+      yAxis: {
+        type: 'value',
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+      },
       series: _.map(dimensions.slice(1), dimension => ({
-        type: 'bar',
+        type: 'line',
         name: dimension,
       })),
     };
 
     return (
-      <ReactEcharts option={option} {...this.props} />
+      <ReactEcharts option={option} />
     );
   }
 }
