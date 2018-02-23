@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
 
-export default class Pie extends PureComponent {
+export default class Donut extends PureComponent {
   static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object),
+    source: PropTypes.arrayOf(PropTypes.array),
     percent: PropTypes.number,
     title: PropTypes.string,
     subTitle: PropTypes.string,
@@ -13,7 +13,7 @@ export default class Pie extends PureComponent {
   }
 
   static defaultProps = {
-    data: null,
+    source: null,
     percent: null,
     title: '',
     subTitle: '',
@@ -22,13 +22,13 @@ export default class Pie extends PureComponent {
 
   render() {
     const {
-      data,
+      source,
       percent,
       title,
       subTitle,
       hasLegend,
     } = this.props;
-    if (_.isEmpty(data) && _.isNull(percent)) {
+    if (_.isEmpty(source) && _.isNull(percent)) {
       return null;
     }
 
@@ -39,8 +39,10 @@ export default class Pie extends PureComponent {
         x: 'center',
         y: 'center',
         textStyle: {
-          fontSize: '30',
-          fontWeight: 'bold',
+          fontSize: '26',
+        },
+        subtextStyle: {
+          fontSize: '16',
         },
       },
       series: [
@@ -90,24 +92,40 @@ export default class Pie extends PureComponent {
         ],
       }, option);
     } else {
+      const total = _.chain(source)
+        .slice(1)
+        .reduce((tot, row) => tot + row[1], 0)
+        .value();
       option = _.defaultsDeep({
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          formatter: '{b}: {d}%',
         },
         legend: hasLegend ?
           {
             orient: 'vertical',
-            x: 'right',
-            y: 'center',
-            data: _.map(data, 'name'),
+            top: 'middle',
+            right: '5%',
+            formatter: name => _.chain(source)
+              .filter(row => row[0] === name)
+              .map(row => `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`)
+              .first()
+              .value(),
+            data: source.slice(1).map(row => ({
+              name: row[0],
+              value: row.join(':'),
+              icon: 'circle',
+            })),
           } :
           {
             show: false,
           },
         series: [
           {
-            data,
+            data: source.slice(1).map(row => ({
+              name: row[0],
+              value: row[1],
+            })),
           },
         ],
       }, option);
