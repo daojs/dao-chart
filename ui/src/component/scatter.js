@@ -45,7 +45,7 @@ export default class Scatter extends PureComponent {
     };
 
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} {...this.props} />
     );
   }
 }

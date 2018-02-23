@@ -47,7 +47,7 @@ export default class Radar extends PureComponent {
     };
 
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} {...this.props} />
     );
   }
 }

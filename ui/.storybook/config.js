@@ -1,10 +1,9 @@
 import { configure } from '@storybook/react';
 
+const req = require.context('../stories', true, /\.stories\.js$/)
+
 function loadStories() {
-  require('../stories/index.js');
-  require('../stories/wordcloud.js');
-  require('../stories/donut.js');
-  // You can require as many stories as you need.
+  req.keys().forEach((filename) => req(filename))
 }
 
 configure(loadStories, module);
