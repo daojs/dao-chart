@@ -37,7 +37,7 @@ export default class Line extends PureComponent {
     };
 
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} {...this.props} />
     );
   }
 }
