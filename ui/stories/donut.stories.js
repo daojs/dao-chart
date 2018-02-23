@@ -11,6 +11,6 @@ storiesOf('Donut Chart', module)
   .add('donut chart - data', () => (
     <Donut source={pieSource} title="$15781" subTitle="revenue" />
   ))
-  .add('donut chart - data - hasLegend', () => (
-    <Donut hasLegend source={pieSource} title="$15781" subTitle="revenue" />
+  .add('donut chart - data - withoutLegend', () => (
+    <Donut hasLegend={false} source={pieSource} title="$15781" subTitle="revenue" />
   ));

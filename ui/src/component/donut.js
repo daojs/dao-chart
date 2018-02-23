@@ -17,7 +17,7 @@ export default class Donut extends PureComponent {
     percent: null,
     title: '',
     subTitle: '',
-    hasLegend: false,
+    hasLegend: true,
   }
 
   render() {

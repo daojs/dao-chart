@@ -13,7 +13,7 @@ export default class Pie extends PureComponent {
   static defaultProps = {
     source: null,
     percent: null,
-    hasLegend: false,
+    hasLegend: true,
   }
 
   render() {
@@ -88,7 +88,7 @@ export default class Pie extends PureComponent {
           {
             orient: 'vertical',
             top: 'middle',
-            right: '5%',
+            right: '0',
             formatter: name => _.chain(source)
               .filter(row => row[0] === name)
               .map(row => `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`)

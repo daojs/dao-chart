@@ -11,6 +11,6 @@ storiesOf('Pie Chart', module)
   .add('pie chart - data', () => (
     <Pie source={pieSource} />
   ))
-  .add('pie chart - data - hasLegend', () => (
-    <Pie hasLegend source={pieSource} />
+  .add('pie chart - data - withoutLegend', () => (
+    <Pie hasLegend={false} source={pieSource} />
   ));
