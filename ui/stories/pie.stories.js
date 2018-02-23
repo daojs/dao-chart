@@ -5,12 +5,6 @@ import { pieSource } from './data';
 
 
 storiesOf('Pie Chart', module)
-  .add('pie chart - percent', () => (
-    <Pie percent={28} />
-  ))
-  .add('pie chart - data', () => (
+  .add('pie chart', () => (
     <Pie source={pieSource} />
-  ))
-  .add('pie chart - data - withoutLegend', () => (
-    <Pie hasLegend={false} source={pieSource} />
   ));
