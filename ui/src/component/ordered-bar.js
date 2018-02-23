@@ -15,16 +15,16 @@ export default class OrderedBar extends PureComponent {
       return null;
     }
 
-    const [dimension, metric] = dimensions;
+    const [y, x] = dimensions;
 
     const newSource = _.reduce(this.props.source.slice(1), (memo, data) => [
       ...memo,
       {
-        [dimension]: _.first(data),
-        [metric]: _.last(data),
+        [y]: _.first(data),
+        [x]: _.last(data),
       },
     ], []);
-    const sortedSource = _.sortBy(newSource, metric);
+    const sortedSource = _.sortBy(newSource, x);
 
     const option = {
       legend: {},
@@ -42,7 +42,7 @@ export default class OrderedBar extends PureComponent {
       xAxis: { type: 'value' },
       series: {
         type: 'bar',
-        name: metric,
+        name: x,
       },
     };
 
