@@ -24,4 +24,11 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([{ from: './index.html', to: '../target' }]),
   ],
+  externals: {
+    jsdom: 'window',
+    cheerio: 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': 'window',
+    'react/addons': true,
+  },
 };
