@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of Simple scatter 1`] = `
+<EchartsReact
+  className=""
+  echarts={Object {}}
+  lazyUpdate={false}
+  loadingOption={null}
+  notMerge={false}
+  onChartReady={[Function]}
+  onEvents={Object {}}
+  option={
+    Object {
+      "dataset": Object {
+        "dimensions": Array [
+          "Price",
+          "Meat",
+          "Vegetable",
+        ],
+        "source": Array [
+          Array [
+            "Price",
+            "Meat",
+            "Vegetable",
+          ],
+          Array [
+            23,
+            167,
+            8.3,
+          ],
+          Array [
+            81,
+            284,
+            12,
+          ],
+          Array [
+            91,
+            413,
+            4.1,
+          ],
+          Array [
+            13,
+            287,
+            13.5,
+          ],
+        ],
+      },
+      "legend": Object {},
+      "series": Array [
+        Object {
+          "name": "Meat",
+          "type": "scatter",
+        },
+        Object {
+          "name": "Vegetable",
+          "type": "scatter",
+        },
+      ],
+      "tooltip": Object {
+        "trigger": "axis",
+      },
+      "xAxis": Object {
+        "splitLine": Object {
+          "lineStyle": Object {
+            "type": "dashed",
+          },
+        },
+      },
+      "yAxis": Object {
+        "scale": true,
+        "splitLine": Object {
+          "lineStyle": Object {
+            "type": "dashed",
+          },
+        },
+      },
+    }
+  }
+  opts={Object {}}
+  showLoading={false}
+  source={
+    Array [
+      Array [
+        "Price",
+        "Meat",
+        "Vegetable",
+      ],
+      Array [
+        23,
+        167,
+        8.3,
+      ],
+      Array [
+        81,
+        284,
+        12,
+      ],
+      Array [
+        91,
+        413,
+        4.1,
+      ],
+      Array [
+        13,
+        287,
+        13.5,
+      ],
+    ]
+  }
+  style={Object {}}
+  theme={null}
+/>
+`;

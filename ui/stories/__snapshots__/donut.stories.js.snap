@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of donut chart - data - withoutLegend 1`] = `
+<EchartsReact
+  className=""
+  echarts={Object {}}
+  lazyUpdate={false}
+  loadingOption={null}
+  notMerge={false}
+  onChartReady={[Function]}
+  onEvents={Object {}}
+  option={
+    Object {
+      "legend": Object {
+        "show": false,
+      },
+      "series": Array [
+        Object {
+          "data": Array [
+            Object {
+              "name": "直接访问",
+              "value": 335,
+            },
+            Object {
+              "name": "邮件营销",
+              "value": 310,
+            },
+            Object {
+              "name": "联盟广告",
+              "value": 234,
+            },
+            Object {
+              "name": "视频广告",
+              "value": 135,
+            },
+            Object {
+              "name": "搜索引擎",
+              "value": 1548,
+            },
+          ],
+          "hoverOffset": 0,
+          "label": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "labelLine": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "radius": Array [
+            "50%",
+            "70%",
+          ],
+          "type": "pie",
+        },
+      ],
+      "title": Object {
+        "subtext": "revenue",
+        "subtextStyle": Object {
+          "fontSize": "16",
+        },
+        "text": "$15781",
+        "textStyle": Object {
+          "fontSize": "26",
+        },
+        "x": "center",
+        "y": "center",
+      },
+      "tooltip": Object {
+        "formatter": "{b}: {d}%",
+        "trigger": "item",
+      },
+    }
+  }
+  opts={Object {}}
+  showLoading={false}
+  style={Object {}}
+  theme={null}
+/>
+`;
+
+exports[`Snapshot of donut chart - data 1`] = `
+<EchartsReact
+  className=""
+  echarts={Object {}}
+  lazyUpdate={false}
+  loadingOption={null}
+  notMerge={false}
+  onChartReady={[Function]}
+  onEvents={Object {}}
+  option={
+    Object {
+      "legend": Object {
+        "data": Array [
+          Object {
+            "icon": "circle",
+            "name": "直接访问",
+            "value": "直接访问:335",
+          },
+          Object {
+            "icon": "circle",
+            "name": "邮件营销",
+            "value": "邮件营销:310",
+          },
+          Object {
+            "icon": "circle",
+            "name": "联盟广告",
+            "value": "联盟广告:234",
+          },
+          Object {
+            "icon": "circle",
+            "name": "视频广告",
+            "value": "视频广告:135",
+          },
+          Object {
+            "icon": "circle",
+            "name": "搜索引擎",
+            "value": "搜索引擎:1548",
+          },
+        ],
+        "formatter": [Function],
+        "orient": "vertical",
+        "right": "5%",
+        "top": "middle",
+      },
+      "series": Array [
+        Object {
+          "data": Array [
+            Object {
+              "name": "直接访问",
+              "value": 335,
+            },
+            Object {
+              "name": "邮件营销",
+              "value": 310,
+            },
+            Object {
+              "name": "联盟广告",
+              "value": 234,
+            },
+            Object {
+              "name": "视频广告",
+              "value": 135,
+            },
+            Object {
+              "name": "搜索引擎",
+              "value": 1548,
+            },
+          ],
+          "hoverOffset": 0,
+          "label": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "labelLine": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "radius": Array [
+            "50%",
+            "70%",
+          ],
+          "type": "pie",
+        },
+      ],
+      "title": Object {
+        "subtext": "revenue",
+        "subtextStyle": Object {
+          "fontSize": "16",
+        },
+        "text": "$15781",
+        "textStyle": Object {
+          "fontSize": "26",
+        },
+        "x": "center",
+        "y": "center",
+      },
+      "tooltip": Object {
+        "formatter": "{b}: {d}%",
+        "trigger": "item",
+      },
+    }
+  }
+  opts={Object {}}
+  showLoading={false}
+  style={Object {}}
+  theme={null}
+/>
+`;
+
+exports[`Snapshot of donut chart - percent 1`] = `
+<EchartsReact
+  className=""
+  echarts={Object {}}
+  lazyUpdate={false}
+  loadingOption={null}
+  notMerge={false}
+  onChartReady={[Function]}
+  onEvents={Object {}}
+  option={
+    Object {
+      "series": Array [
+        Object {
+          "data": Array [
+            Object {
+              "itemStyle": Object {
+                "normal": Object {
+                  "color": "#58afff",
+                },
+              },
+              "value": 28,
+            },
+            Object {
+              "itemStyle": Object {
+                "emphasis": Object {
+                  "color": "#f8f8f8",
+                },
+                "normal": Object {
+                  "color": "#f2f4f6",
+                },
+              },
+              "value": 72,
+            },
+          ],
+          "hoverOffset": 0,
+          "label": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "labelLine": Object {
+            "normal": Object {
+              "show": false,
+            },
+          },
+          "radius": Array [
+            "50%",
+            "70%",
+          ],
+          "type": "pie",
+        },
+      ],
+      "title": Object {
+        "subtext": "fast food",
+        "subtextStyle": Object {
+          "fontSize": "16",
+        },
+        "text": "28%",
+        "textStyle": Object {
+          "fontSize": "26",
+        },
+        "x": "center",
+        "y": "center",
+      },
+    }
+  }
+  opts={Object {}}
+  showLoading={false}
+  style={Object {}}
+  theme={null}
+/>
+`;

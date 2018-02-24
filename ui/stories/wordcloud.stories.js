@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '../.storybook/facade';
 import WordCloud from '../src/component/wordcloud';
 
 const data = [

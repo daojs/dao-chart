@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '../.storybook/facade';
 import Map from '../src/component/map';
 
 function randomData() {

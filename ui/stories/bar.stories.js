@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '../.storybook/facade';
 import Bar from '../src/component/bar';
 import HorizontalBar from '../src/component/horizontal-bar';
 import OrderedBar from '../src/component/ordered-bar';

@@ -1,0 +1,526 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of Simple map 1`] = `
+<EchartsReact
+  className=""
+  echarts={Object {}}
+  lazyUpdate={false}
+  loadingOption={null}
+  notMerge={false}
+  onChartReady={[Function]}
+  onEvents={Object {}}
+  option={
+    Object {
+      "legend": Object {},
+      "series": Array [
+        Object {
+          "data": Array [
+            Object {
+              "name": "北京",
+              "value": 367,
+            },
+            Object {
+              "name": "天津",
+              "value": 941,
+            },
+            Object {
+              "name": "上海",
+              "value": 388,
+            },
+            Object {
+              "name": "重庆",
+              "value": 347,
+            },
+            Object {
+              "name": "河北",
+              "value": 850,
+            },
+            Object {
+              "name": "河南",
+              "value": 11,
+            },
+            Object {
+              "name": "云南",
+              "value": 960,
+            },
+            Object {
+              "name": "辽宁",
+              "value": 844,
+            },
+            Object {
+              "name": "黑龙江",
+              "value": 216,
+            },
+            Object {
+              "name": "湖南",
+              "value": 236,
+            },
+            Object {
+              "name": "安徽",
+              "value": 20,
+            },
+            Object {
+              "name": "山东",
+              "value": 838,
+            },
+            Object {
+              "name": "新疆",
+              "value": 658,
+            },
+            Object {
+              "name": "江苏",
+              "value": 952,
+            },
+            Object {
+              "name": "浙江",
+              "value": 693,
+            },
+            Object {
+              "name": "江西",
+              "value": 347,
+            },
+            Object {
+              "name": "湖北",
+              "value": 410,
+            },
+            Object {
+              "name": "广西",
+              "value": 913,
+            },
+            Object {
+              "name": "甘肃",
+              "value": 391,
+            },
+            Object {
+              "name": "山西",
+              "value": 134,
+            },
+            Object {
+              "name": "内蒙古",
+              "value": 615,
+            },
+            Object {
+              "name": "陕西",
+              "value": 356,
+            },
+            Object {
+              "name": "吉林",
+              "value": 599,
+            },
+            Object {
+              "name": "福建",
+              "value": 543,
+            },
+            Object {
+              "name": "贵州",
+              "value": 828,
+            },
+            Object {
+              "name": "广东",
+              "value": 652,
+            },
+            Object {
+              "name": "青海",
+              "value": 869,
+            },
+            Object {
+              "name": "西藏",
+              "value": 693,
+            },
+            Object {
+              "name": "四川",
+              "value": 172,
+            },
+            Object {
+              "name": "宁夏",
+              "value": 293,
+            },
+            Object {
+              "name": "海南",
+              "value": 641,
+            },
+            Object {
+              "name": "台湾",
+              "value": 679,
+            },
+            Object {
+              "name": "香港",
+              "value": 373,
+            },
+            Object {
+              "name": "澳门",
+              "value": 736,
+            },
+          ],
+          "label": Object {
+            "emphasis": Object {
+              "show": true,
+            },
+            "normal": Object {
+              "show": true,
+            },
+          },
+          "mapType": "china",
+          "name": "iPhone3",
+          "roam": false,
+          "type": "map",
+        },
+        Object {
+          "data": Array [
+            Object {
+              "name": "北京",
+              "value": 658,
+            },
+            Object {
+              "name": "天津",
+              "value": 716,
+            },
+            Object {
+              "name": "上海",
+              "value": 684,
+            },
+            Object {
+              "name": "重庆",
+              "value": 632,
+            },
+            Object {
+              "name": "河北",
+              "value": 345,
+            },
+            Object {
+              "name": "河南",
+              "value": 212,
+            },
+            Object {
+              "name": "云南",
+              "value": 830,
+            },
+            Object {
+              "name": "辽宁",
+              "value": 909,
+            },
+            Object {
+              "name": "黑龙江",
+              "value": 955,
+            },
+            Object {
+              "name": "湖南",
+              "value": 568,
+            },
+            Object {
+              "name": "安徽",
+              "value": 907,
+            },
+            Object {
+              "name": "山东",
+              "value": 808,
+            },
+            Object {
+              "name": "新疆",
+              "value": 675,
+            },
+            Object {
+              "name": "江苏",
+              "value": 113,
+            },
+            Object {
+              "name": "浙江",
+              "value": 279,
+            },
+            Object {
+              "name": "江西",
+              "value": 558,
+            },
+            Object {
+              "name": "湖北",
+              "value": 378,
+            },
+            Object {
+              "name": "广西",
+              "value": 276,
+            },
+            Object {
+              "name": "甘肃",
+              "value": 2,
+            },
+            Object {
+              "name": "山西",
+              "value": 398,
+            },
+            Object {
+              "name": "内蒙古",
+              "value": 785,
+            },
+            Object {
+              "name": "陕西",
+              "value": 75,
+            },
+            Object {
+              "name": "吉林",
+              "value": 210,
+            },
+            Object {
+              "name": "福建",
+              "value": 984,
+            },
+            Object {
+              "name": "贵州",
+              "value": 740,
+            },
+            Object {
+              "name": "广东",
+              "value": 416,
+            },
+            Object {
+              "name": "青海",
+              "value": 963,
+            },
+            Object {
+              "name": "西藏",
+              "value": 209,
+            },
+            Object {
+              "name": "四川",
+              "value": 994,
+            },
+            Object {
+              "name": "宁夏",
+              "value": 791,
+            },
+            Object {
+              "name": "海南",
+              "value": 232,
+            },
+            Object {
+              "name": "台湾",
+              "value": 970,
+            },
+            Object {
+              "name": "香港",
+              "value": 490,
+            },
+            Object {
+              "name": "澳门",
+              "value": 684,
+            },
+          ],
+          "label": Object {
+            "emphasis": Object {
+              "show": true,
+            },
+            "normal": Object {
+              "show": true,
+            },
+          },
+          "mapType": "china",
+          "name": "iPhone4",
+          "roam": false,
+          "type": "map",
+        },
+      ],
+      "tooltip": Object {
+        "trigger": "item",
+      },
+      "visualMap": Object {
+        "calculable": true,
+        "left": "left",
+        "max": 1833,
+        "min": 0,
+        "text": Array [
+          "高",
+          "低",
+        ],
+        "top": "bottom",
+      },
+    }
+  }
+  opts={Object {}}
+  showLoading={false}
+  source={
+    Array [
+      Array [
+        "Location",
+        "iPhone3",
+        "iPhone4",
+      ],
+      Array [
+        "北京",
+        367,
+        658,
+      ],
+      Array [
+        "天津",
+        941,
+        716,
+      ],
+      Array [
+        "上海",
+        388,
+        684,
+      ],
+      Array [
+        "重庆",
+        347,
+        632,
+      ],
+      Array [
+        "河北",
+        850,
+        345,
+      ],
+      Array [
+        "河南",
+        11,
+        212,
+      ],
+      Array [
+        "云南",
+        960,
+        830,
+      ],
+      Array [
+        "辽宁",
+        844,
+        909,
+      ],
+      Array [
+        "黑龙江",
+        216,
+        955,
+      ],
+      Array [
+        "湖南",
+        236,
+        568,
+      ],
+      Array [
+        "安徽",
+        20,
+        907,
+      ],
+      Array [
+        "山东",
+        838,
+        808,
+      ],
+      Array [
+        "新疆",
+        658,
+        675,
+      ],
+      Array [
+        "江苏",
+        952,
+        113,
+      ],
+      Array [
+        "浙江",
+        693,
+        279,
+      ],
+      Array [
+        "江西",
+        347,
+        558,
+      ],
+      Array [
+        "湖北",
+        410,
+        378,
+      ],
+      Array [
+        "广西",
+        913,
+        276,
+      ],
+      Array [
+        "甘肃",
+        391,
+        2,
+      ],
+      Array [
+        "山西",
+        134,
+        398,
+      ],
+      Array [
+        "内蒙古",
+        615,
+        785,
+      ],
+      Array [
+        "陕西",
+        356,
+        75,
+      ],
+      Array [
+        "吉林",
+        599,
+        210,
+      ],
+      Array [
+        "福建",
+        543,
+        984,
+      ],
+      Array [
+        "贵州",
+        828,
+        740,
+      ],
+      Array [
+        "广东",
+        652,
+        416,
+      ],
+      Array [
+        "青海",
+        869,
+        963,
+      ],
+      Array [
+        "西藏",
+        693,
+        209,
+      ],
+      Array [
+        "四川",
+        172,
+        994,
+      ],
+      Array [
+        "宁夏",
+        293,
+        791,
+      ],
+      Array [
+        "海南",
+        641,
+        232,
+      ],
+      Array [
+        "台湾",
+        679,
+        970,
+      ],
+      Array [
+        "香港",
+        373,
+        490,
+      ],
+      Array [
+        "澳门",
+        736,
+        684,
+      ],
+    ]
+  }
+  style={
+    Object {
+      "height": "800px",
+      "width": "100%",
+    }
+  }
+  theme={null}
+/>
+`;
