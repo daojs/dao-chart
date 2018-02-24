@@ -2,23 +2,18 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate } from '../utils';
 
 export default class Pie extends PureComponent {
   static propTypes = {
-    source: PropTypes.arrayOf(PropTypes.array),
-  }
-
-  static defaultProps = {
-    source: null,
+    source: PropTypes.arrayOf(PropTypes.array).isRequired,
   }
 
   render() {
     const {
       source,
     } = this.props;
-    if (_.isEmpty(source)) {
-      return null;
-    }
+    validate(this.props.source);
 
     const total = _.chain(source)
       .slice(1)

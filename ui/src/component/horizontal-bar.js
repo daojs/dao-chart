@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate, getDimensionSeries } from '../utils';
 
 export default class HorizontalBar extends PureComponent {
   static propTypes = {
@@ -9,11 +10,8 @@ export default class HorizontalBar extends PureComponent {
   }
 
   render() {
+    validate(this.props.source);
     const dimensions = _.first(this.props.source);
-    if (_.isEmpty(dimensions)) {
-      return null;
-    }
-
     const option = {
       legend: {},
       tooltip: {
@@ -28,10 +26,10 @@ export default class HorizontalBar extends PureComponent {
       },
       yAxis: { type: 'category' },
       xAxis: { type: 'value' },
-      series: _.map(dimensions.slice(1), dimension => ({
+      series: getDimensionSeries({
+        dimensions,
         type: 'bar',
-        name: dimension,
-      })),
+      }),
     };
 
     return (
