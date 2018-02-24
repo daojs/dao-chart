@@ -11,11 +11,14 @@
     "lint": "eslint **/*.js",
     "storybook": "start-storybook -p 8082 -c .storybook",
     "test": "jest --config=jest.config.js",
-    "test.watch": "jest --config=jest.config.js --watch"
+    "test.watch": "jest --config=jest.config.js --watch",
+    "build-storybook": "build-storybook -c .storybook -o .out",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.12",
     "@storybook/react": "^3.3.12",
+    "@storybook/storybook-deployer": "^2.3.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
     "babel-loader": "^7.1.2",
