@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
@@ -6,7 +7,7 @@ import { validate } from '../utils';
 
 export default class WordCloud extends PureComponent {
   static propTypes = {
-    source: PropTypes.arrayOf(PropTypes.object).isRequired,
+    source: PropTypes.arrayOf(PropTypes.array).isRequired,
   }
 
   render() {
@@ -21,7 +22,10 @@ export default class WordCloud extends PureComponent {
         {
           type: 'wordCloud',
           shape: 'circle',
-          data: source,
+          data: _.chain(source).slice(1).map(row => ({
+            name: row[0],
+            value: row[1],
+          })).value(),
           left: 'center',
           top: 'top',
           width: '100%',
