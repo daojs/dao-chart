@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "start": "node index.js",
-    "dev": "supervisor index.js"
+    "dev": "supervisor index.js",
+    "test": "mocha"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -25,9 +26,12 @@
     "eslint-config-koa": "^2.0.2",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-mocha": "^4.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^5.0.1",
+    "supertest": "^3.0.0",
     "supervisor": "^0.12.0"
   }
 }

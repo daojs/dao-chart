@@ -1,4 +1,3 @@
-
 const Koa = require('koa');
 const serve = require('koa-static');
 const Router = require('koa-router');
@@ -9,7 +8,7 @@ const schema = require('./schema');
 const app = new Koa();
 const router = new Router();
 
-router.all('/graphql', graphqlHTTP({
+router.all('/api', graphqlHTTP({
   schema: schema,
   graphiql: true
 }));
@@ -18,4 +17,4 @@ app.use(router.routes()).use(router.allowedMethods());
 
 app.use(serve('../target'));
 
-app.listen(9001);
+module.exports = app.listen(9001);
