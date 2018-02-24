@@ -10,7 +10,9 @@ const eunmTypeType = require('./types/enum-type');
 const mockTypes = [
   { id: '1', name: 'Beijing' },
   { id: '2', name: 'wewei@microsoft.com', parent: '1' },
-  { id: '3', name: 'beef', relation: ['1', '2'] }
+  { id: '3', name: 'beef', relation: ['1', '2'] },
+  { id: '4', name: 'Suzhou', relation: ['1'] },
+  { id: '5', name: 'Microsoft', relation: ['1', '2', '3', '4'] }
 ];
 
 const schema = new GraphQLSchema({
