@@ -105,5 +105,5 @@ const data = [
 
 storiesOf('Wordcloud Chart', module)
   .add('wordcloud chart', () => (
-    <WordCloud data={data} />
+    <WordCloud source={data} />
   ));

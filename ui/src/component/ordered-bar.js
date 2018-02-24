@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate } from '../utils';
 
 export default class OrderedBar extends PureComponent {
   static propTypes = {
@@ -9,9 +10,10 @@ export default class OrderedBar extends PureComponent {
   }
 
   render() {
+    validate(this.props.source);
     const dimensions = _.first(this.props.source);
     // ordered chart only supports single metric and single dimension
-    if (_.isEmpty(dimensions) || _.size(dimensions) > 2) {
+    if (_.size(dimensions) > 2) {
       return null;
     }
 
