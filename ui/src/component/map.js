@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate } from '../utils';
 
 require('echarts/map/js/china.js');
 
@@ -11,15 +12,8 @@ export default class Map extends PureComponent {
   }
 
   render() {
+    validate(this.props.source);
     const dimensions = _.first(this.props.source);
-    const dimensionCount = _.size(dimensions);
-
-    // check whether the source is valid
-    // TODO, move to util function
-    if (dimensionCount === 0 ||
-       (_.size(_.flatten(this.props.source)) !== dimensionCount * _.size(this.props.source))) {
-      return null;
-    }
 
     // dataset in map has a bug that the calcuated value in visualMap is not correct
     // so here set data in series
