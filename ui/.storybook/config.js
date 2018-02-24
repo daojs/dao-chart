@@ -1,8 +1,13 @@
-import { configure } from '@storybook/react';
+import { configure as storybookConfigure } from '@storybook/react';
+import { configure as enzymeConfigure } from 'enzyme';
+import EnzymeAdapter from 'enzyme-adapter-react-16';
+
+enzymeConfigure({ adapter: new EnzymeAdapter() });
+
+const req = require.context('../stories', true, /\.stories\.js$/)
 
 function loadStories() {
-  require('../stories/index.js');
-  // You can require as many stories as you need.
+  req.keys().forEach((filename) => req(filename))
 }
 
-configure(loadStories, module);
+storybookConfigure(loadStories, module);

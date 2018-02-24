@@ -7,11 +7,29 @@
       "jsx": true
     }
   },
-  "env": { "browser": true },
+  "env": {
+    "browser": true
+  },
   "extends": "airbnb",
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
     "react/prop-types": 1,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.stories.js"
+        ]
+      }
+    ],
     "import/prefer-default-export": 0,
     "linebreak-style": 0,
     "jsx-a11y/anchor-is-valid": 0
