@@ -40,18 +40,26 @@ export default class Treemap extends PureComponent {
     const { source, primaryKey, parentKey } = this.props;
     const dimensions = _.first(source);
 
+    if (_.isEmpty(source.slice(1))) {
+      return null;
+    }
+
     const newSource = _.reduce(source.slice(1), (memo, row) => [
       ...memo,
       _.zipObject(dimensions, row),
     ], []);
 
     const tree = array2Tree(newSource, primaryKey, parentKey);
+    const rootItem = _.find(
+      newSource,
+      data => !_.some(newSource, { [primaryKey]: data[parentKey] }),
+    );
 
     const option = {
       tooltip: {},
       series: {
         type: 'treemap',
-        data: tree[0].children,
+        data: tree[rootItem[parentKey]].children,
       },
     };
 
