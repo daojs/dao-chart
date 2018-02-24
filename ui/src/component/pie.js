@@ -6,11 +6,7 @@ import { validate } from '../utils';
 
 export default class Pie extends PureComponent {
   static propTypes = {
-    source: PropTypes.arrayOf(PropTypes.array),
-  }
-
-  static defaultProps = {
-    source: null,
+    source: PropTypes.arrayOf(PropTypes.array).isRequired,
   }
 
   render() {
