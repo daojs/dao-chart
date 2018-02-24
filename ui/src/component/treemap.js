@@ -50,16 +50,20 @@ export default class Treemap extends PureComponent {
     ], []);
 
     const tree = array2Tree(newSource, primaryKey, parentKey);
-    const rootItem = _.find(
+    const rootItems = _.uniqBy(_.filter(
       newSource,
       data => !_.some(newSource, { [primaryKey]: data[parentKey] }),
-    );
+    ), parentKey);
+
+    if (_.size(rootItems) !== 1) {
+      throw new Error('Data should have one and only one dummy parent id');
+    }
 
     const option = {
       tooltip: {},
       series: {
         type: 'treemap',
-        data: tree[rootItem[parentKey]].children,
+        data: tree[rootItems[0][parentKey]].children,
       },
     };
 
