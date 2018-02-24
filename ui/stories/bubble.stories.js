@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '../.storybook/facade';
 import Bubble from '../src/component/bubble';
 
 // Income mapx to x, Age maps to y, GDP maps to size, Country maps to label, Year maps to legend
