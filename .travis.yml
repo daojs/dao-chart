@@ -9,6 +9,8 @@ cache: yarn
 
 install:
   - cd ui && yarn && cd ..
+  - cd mt && yarn && cd ..
 
 script:
   - yarn run ui-gated
+  - yarn run mt-gated

@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "ui-gated": "cd ui && yarn run lint && yarn run build"
+    "ui-gated": "cd ui && yarn run lint && yarn run build",
+    "mt-gated": "cd mt && yarn run lint"
   }
 }
