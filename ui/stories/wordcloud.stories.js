@@ -105,5 +105,9 @@ const source = [
 
 storiesOf('Wordcloud Chart', module)
   .add('wordcloud chart', () => (
+<<<<<<< HEAD
     <WordCloud source={source} />
+=======
+    <WordCloud source={data} />
+>>>>>>> origin/master
   ));

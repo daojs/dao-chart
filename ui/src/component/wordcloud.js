@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import 'echarts-wordcloud';
+import { validate } from '../utils';
 
 export default class WordCloud extends PureComponent {
   static propTypes = {
@@ -11,7 +12,7 @@ export default class WordCloud extends PureComponent {
 
   render() {
     const { source } = this.props;
-
+    validate(source);
     const option = {
       tooltip: {
         show: false,

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate } from '../utils';
 
 export default class Radar extends PureComponent {
   static propTypes = {
@@ -26,6 +27,8 @@ export default class Radar extends PureComponent {
         ['2017', 93.7, 55.1],
       ];
      */
+    validate(source);
+
     const newSource = source[0].map((col, i) => source.map(row => row[i]));
 
     const option = {
