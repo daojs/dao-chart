@@ -7,7 +7,7 @@
     "lint": "eslint **/*.js",
     "start": "node index.js",
     "dev": "supervisor index.js",
-    "test": "mocha"
+    "test": "mocha --reporter nyan"
   },
   "engines": {
     "node": ">=6.0.0"
