@@ -3,12 +3,14 @@ export const storiesOf = function storiesOf() {
   var story;
   api.add = (name, func)=> {
     story = func();
-    snapshot(name, story);
+    shouldCreateWithoutError(name, story);
+    // snapshot(name, story);
     return api;
   };
   api.addWithInfo = (name, func)=> {
     story = func();
-    snapshot(name, story);
+    shouldCreateWithoutError(name, story);
+    // snapshot(name, story);
     return api;
   };
   return api;
@@ -20,6 +22,13 @@ export const linkTo = () => {};
 export const specs = (spec) => {
   spec()
 };
+
+export const shouldCreateWithoutError = (name, story) => {
+  it(`${name} should create without error`, function () {
+    const { shallow } = require('enzyme');
+    expect(shallow(story)).not.toBeNull();
+  });
+}
 
 export const snapshot = (name, story) => {
   it(`Snapshot of ${name}`, function () {
