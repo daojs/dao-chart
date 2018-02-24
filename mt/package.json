@@ -15,7 +15,8 @@
     "koa": "^2.4.1",
     "koa-graphql": "^0.7.5",
     "koa-router": "^7.4.0",
-    "koa-static": "^4.0.2"
+    "koa-static": "^4.0.2",
+    "lodash": "^4.17.5"
   },
   "devDependencies": {
     "eslint": "^4.18.1",

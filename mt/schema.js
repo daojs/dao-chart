@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -7,21 +9,33 @@ const {
 
 const mockTypes = [
   { id: '1', name: 'Beijing' },
-  { id: '2', name: 'wewei@microsoft.com', parent: [ '1' ] },
+  { id: '2', name: 'wewei@microsoft.com', parent: '1' },
   { id: '3', name: 'beef', relation: ['1', '2'] }
 ];
+
+const connectionType = new GraphQLObjectType({
+  name: 'Connection',
+  fields: {
+    id: { type: GraphQLString },
+    name: { type: GraphQLString }
+  },
+  resolve(parent, { id }) {
+    return {
+      id: id,
+      name: JSON.stringify(parent)
+    };
+  }
+});
 
 const eunmTypeType = new GraphQLObjectType({
   name: 'enumType',
   fields: {
     id: { type: GraphQLString },
     name: { type: GraphQLString },
-    parent: {
-      type: new GraphQLList(GraphQLString)
-    },
     relation: {
-      type: new GraphQLList(GraphQLString)
-    }
+      type: new GraphQLList(connectionType)
+    },
+    parent: { type: connectionType }
   }
 });
 
@@ -35,7 +49,12 @@ const schema = new GraphQLSchema({
           id: { type: GraphQLString }
         },
         resolve(parent, { id }) {
-          return mockTypes.find(t => t.id === id);
+          const rawType = _.find(mockTypes, { id });
+
+          return _.defaults({}, {
+            relation: _.map(rawType.relation, r => _.find(mockTypes, { id: r })),
+            parent: _.find(mockTypes, { id: rawType.parent })
+          }, rawType);
         }
       }
     }
