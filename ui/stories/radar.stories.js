@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf } from '../.storybook/facade';
 import Radar from '../src/component/radar';
 import { source } from './data';
 

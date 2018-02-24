@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate, getDataSeries } from '../utils';
 
 export default class Area extends PureComponent {
   static propTypes = {
@@ -9,12 +10,9 @@ export default class Area extends PureComponent {
   }
 
   render() {
+    validate(this.props.source);
     const dimensions = _.first(this.props.source);
     const source = _.slice(this.props.source, 1);
-    if (_.isEmpty(dimensions)) {
-      return null;
-    }
-
     const option = {
       legend: {},
       tooltip: {
@@ -28,14 +26,17 @@ export default class Area extends PureComponent {
         boundaryGap: false,
         data: _.slice(dimensions, 1),
       },
-      series: _.map(source, row => ({
+      series: getDataSeries({
+        source,
         type: 'line',
-        name: row[0],
-        stack: 'total',
-        areaStyle: { normal: {} },
-        data: _.slice(row, 1),
-      })),
+        defaultSeriesOpt: {
+          stack: 'total',
+          areaStyle: { normal: {} },
+        },
+      }),
     };
+
+    console.log(`the options is:  ${JSON.stringify(option.series)}`); //eslint-disable-line
 
     return (
       <ReactEcharts option={option} {...this.props} />

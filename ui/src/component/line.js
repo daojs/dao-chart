@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { validate, getDimensionSeries } from '../utils';
 
 export default class Line extends PureComponent {
   static propTypes = {
@@ -9,11 +10,8 @@ export default class Line extends PureComponent {
   }
 
   render() {
+    validate(this.props.source);
     const dimensions = _.first(this.props.source);
-    if (_.isEmpty(dimensions)) {
-      return null;
-    }
-
     const option = {
       legend: {},
       tooltip: {
@@ -30,10 +28,10 @@ export default class Line extends PureComponent {
         type: 'category',
         boundaryGap: false,
       },
-      series: _.map(dimensions.slice(1), dimension => ({
+      series: getDimensionSeries({
+        dimensions,
         type: 'line',
-        name: dimension,
-      })),
+      }),
     };
 
     return (
