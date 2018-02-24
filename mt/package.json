@@ -7,6 +7,9 @@
     "lint": "eslint **/*.js",
     "start": "node index.js"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "dependencies": {
     "graphql": "^0.13.1",
     "koa": "^2.4.1",
