@@ -52,8 +52,6 @@ export default class Section extends Component {
 
     const { dimensions, chartType } = section;
 
-    this.toSlots = {};
-
     return (
       <div>
         onEvent: {this.state.history.map(({ name, slicer }) => `${slicer.toSlicer}: ${name}`).join(' > ')}
