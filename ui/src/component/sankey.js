@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate, getDataOption } from '../utils';
+import { validate } from '../utils';
 
 export default class Sankey extends PureComponent {
   static propTypes = {
