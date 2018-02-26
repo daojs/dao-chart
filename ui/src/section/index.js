@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { any } from 'prop-types';
 import _ from 'lodash';
 import { getMetrics } from '../repository';
 import Chart from '../component';
 
 export default class Section extends Component {
   static propTypes = {
-    config: PropTypes.objectOf(PropTypes.object).isRequired,
+    config: PropTypes.objectOf(any).isRequired,
   }
 
   constructor(props) {
@@ -29,14 +29,18 @@ export default class Section extends Component {
 
   onSlicerChange(args) {
     // TODO: just placeholder here
-    const { name, slicer } = args;
-    this.updateMetrics(_.defaults({
-      selected: name,
-    }, this.props.config));
-    const { history } = this.state;
-    this.setState({
-      history: [...history, { name, slicer }],
-    });
+    const { properties, value } = args;
+    const { dimensions } = this.props.config;
+    const slicer = _.omitBy(_.zipObject(properties, value), (val, key) => !_.get(dimensions, `${key}.toSlicer`));
+    if (!_.isEmpty(slicer)) {
+      this.updateMetrics(_.defaults({
+        selected: slicer,
+      }, this.props.config));
+      const { history } = this.state;
+      this.setState({
+        history: [...history, slicer],
+      });
+    }
   }
 
   updateMetrics(config) {
@@ -46,22 +50,15 @@ export default class Section extends Component {
   }
 
   render() {
-    const {
-      section,
-      title,
-    } = this.props.config;
-
-    const { dimensions, chartType } = section;
+    const { chartType } = this.props.config;
 
     return (
       <div>
-        onEvent: {this.state.history.map(({ name, slicer }) => `${slicer.toSlicer}: ${name}`).join(' > ')}
+        onEvent: {this.state.history.map(slicer => JSON.stringify(slicer)).join(' > ')}
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
           onSlicerChange={args => this.onSlicerChange(args)}
-          title={title}
-          dimensions={dimensions}
           chartType={chartType}
         />}
       </div>);
