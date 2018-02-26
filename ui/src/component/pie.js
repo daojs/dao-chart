@@ -7,17 +7,29 @@ import { validate } from '../utils';
 export default class Pie extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array),
+    onSlicerChange: PropTypes.func,
+    dimensions: PropTypes.objectOf(PropTypes.object),
   }
 
   static defaultProps = {
     source: null,
+    onSlicerChange: _.noop,
+    dimensions: {},
   }
 
   render() {
     const {
       source,
+      onSlicerChange,
+      dimensions,
     } = this.props;
-    validate(this.props.source);
+    validate(source);
+
+    const slicerDim = _.chain(source)
+      .first()
+      .filter(dim => _.get(dimensions, `${dim}.toSlicer`))
+      .first()
+      .value();
 
     const total = _.chain(source)
       .slice(1)
@@ -67,8 +79,15 @@ export default class Pie extends PureComponent {
       },
     };
 
+    let onEvents = { click: _.noop }; // work around for the bug in ReactEcharts
+    if (slicerDim) {
+      onEvents = {
+        click: args => onSlicerChange(_.defaults({}, { slicer: dimensions[slicerDim] }, args)),
+      };
+    }
+
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} onEvents={onEvents} />
     );
   }
 }
