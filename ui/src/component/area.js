@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate, getDataSeries } from '../utils';
+import { validate, getDataSeries, transpose } from '../utils';
 
 export default class Area extends PureComponent {
   static propTypes = {
@@ -10,9 +10,9 @@ export default class Area extends PureComponent {
   }
 
   render() {
-    validate(this.props.source);
-    const dimensions = _.first(this.props.source);
-    const source = _.slice(this.props.source, 1);
+    const { source } = this.props;
+    validate(source);
+
     const option = {
       legend: {},
       tooltip: {
@@ -24,7 +24,7 @@ export default class Area extends PureComponent {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: _.slice(dimensions, 1),
+        data: _.chain(transpose(source)).first().slice(1).value(),
       },
       series: getDataSeries({
         source,

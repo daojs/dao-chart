@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { transpose } from './transpose';
 
 // The serieses for data set
 export function getDimensionSeries({
@@ -32,9 +33,11 @@ export function getDataSeries({
   if (!type) {
     typeObj = {};
   }
-  return _.map(source, row =>
-    _.defaults({}, typeObj, defaultSeriesOpt, {
-      name: row[0],
-      data: row.slice(1),
-    }));
+  return _.chain(transpose(source))
+    .slice(1)
+    .map(column => _.defaults({}, typeObj, defaultSeriesOpt, {
+      name: _.first(column),
+      data: _.slice(column, 1),
+    }))
+    .value();
 }
