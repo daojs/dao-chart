@@ -15,8 +15,10 @@ export default class Section extends Component {
       source: [],
       history: [],
     };
-    this.updateMetrics(props.config);
-    this.onSlicerChange = this.onSlicerChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateMetrics(this.props.config);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,9 +34,8 @@ export default class Section extends Component {
       selected: name,
     }, this.props.config));
     const { history } = this.state;
-    history.push({ name, slicer });
     this.setState({
-      history,
+      history: [...history, { name, slicer }],
     });
   }
 
@@ -58,7 +59,7 @@ export default class Section extends Component {
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
-          onSlicerChange={this.onSlicerChange}
+          onSlicerChange={args => this.onSlicerChange(args)}
           title={title}
           dimensions={dimensions}
           chartType={chartType}

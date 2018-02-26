@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Pie from './pie';
 
 const chartMapper = {
-  pie: props => (<Pie {...props} />),
+  pie: Pie,
 };
 
 export default class extends PureComponent {
@@ -13,6 +13,7 @@ export default class extends PureComponent {
 
   render() {
     const { chartType, ...others } = this.props;
-    return (<div>{chartMapper[chartType](others)}</div>);
+    const ChartComponent = chartMapper[chartType] || Pie;
+    return (<ChartComponent {...others} />);
   }
 }
