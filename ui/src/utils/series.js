@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { transpose } from './transpose';
 
 // The serieses for data set
 export function getDimensionSeries({
@@ -23,21 +22,27 @@ export function getDimensionSeries({
 }
 
 // For legacy series for the chart not support data set
-export function getDataSeries({
+export function getDataOption({
   source = [],
   type,
   defaultSeriesOpt = {},
 }) {
-  let typeObj = { type };
+  const typeObj = type ? { type } : {};
+  const columns = _.zip(...source);
 
-  if (!type) {
-    typeObj = {};
-  }
-  return _.chain(transpose(source))
-    .slice(1)
-    .map(column => _.defaults({}, typeObj, defaultSeriesOpt, {
-      name: _.first(column),
-      data: _.slice(column, 1),
-    }))
-    .value();
+  return {
+    axis: {
+      data: _.chain(columns)
+        .first()
+        .slice(1)
+        .value(),
+    },
+    series: _.chain(columns)
+      .slice(1)
+      .map(column => _.defaults({}, typeObj, defaultSeriesOpt, {
+        name: _.first(column),
+        data: _.slice(column, 1),
+      }))
+      .value(),
+  };
 }

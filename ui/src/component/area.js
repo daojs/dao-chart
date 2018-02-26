@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate, getDataSeries, transpose } from '../utils';
+import { validate, getDataOption } from '../utils';
 
 export default class Area extends PureComponent {
   static propTypes = {
@@ -12,8 +12,19 @@ export default class Area extends PureComponent {
   render() {
     const { source } = this.props;
     validate(source);
+    const dataOption = getDataOption({
+      source,
+      type: 'line',
+      defaultSeriesOpt: {
+        stack: 'total',
+        areaStyle: { normal: {} },
+      },
+    });
 
-    const option = {
+    const option = _.defaultsDeep({
+      xAxis: dataOption.axis,
+      series: dataOption.series,
+    }, {
       legend: {},
       tooltip: {
         trigger: 'axis',
@@ -24,17 +35,8 @@ export default class Area extends PureComponent {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: _.chain(transpose(source)).first().slice(1).value(),
       },
-      series: getDataSeries({
-        source,
-        type: 'line',
-        defaultSeriesOpt: {
-          stack: 'total',
-          areaStyle: { normal: {} },
-        },
-      }),
-    };
+    });
 
     console.log(`the options is:  ${JSON.stringify(option.series)}`); //eslint-disable-line
 
