@@ -5,7 +5,7 @@ const {
   GraphQLString
 } = require('graphql');
 
-const eunmTypeType = require('./types/enum-type');
+const enumTypeType = require('./types/enum-type');
 
 const mockTypes = [
   { id: '1', name: 'Beijing' },
@@ -20,7 +20,7 @@ const schema = new GraphQLSchema({
     name: 'RootQueryType',
     fields: {
       enumType: {
-        type: eunmTypeType,
+        type: enumTypeType,
         args: {
           id: { type: GraphQLString }
         },
