@@ -1,0 +1,11 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "node/no-unpublished-require": ["error", {
+        "allowModules": ["supertest"]
+    }]
+}
+}
