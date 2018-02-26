@@ -97,6 +97,9 @@ export default class Donut extends PureComponent {
         .reduce((tot, row) => tot + row[1], 0)
         .value();
       option = _.defaultsDeep({
+        dataset: {
+          source,
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{b}: {d}%',
@@ -120,14 +123,6 @@ export default class Donut extends PureComponent {
           {
             show: false,
           },
-        series: [
-          {
-            data: source.slice(1).map(row => ({
-              name: row[0],
-              value: row[1],
-            })),
-          },
-        ],
       }, option);
     }
 

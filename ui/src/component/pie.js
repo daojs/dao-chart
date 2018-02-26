@@ -37,6 +37,9 @@ export default class Pie extends PureComponent {
       .value();
 
     const option = {
+      dataset: {
+        source,
+      },
       series: [
         {
           type: 'pie',
@@ -53,10 +56,6 @@ export default class Pie extends PureComponent {
               show: false,
             },
           },
-          data: source.slice(1).map(row => ({
-            name: row[0],
-            value: row[1],
-          })),
         },
       ],
       legend: {
