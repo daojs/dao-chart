@@ -1,5 +1,9 @@
 {
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
-    "ui-gated": "cd ui && yarn run lint && yarn run build"
+    "ui-gated": "cd ui && yarn run lint && yarn run build && yarn run test",
+    "mt-gated": "cd mt && yarn run lint && yarn test"
   }
 }
