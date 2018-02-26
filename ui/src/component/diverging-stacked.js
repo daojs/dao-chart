@@ -31,6 +31,13 @@ export default class DivergingStacked extends PureComponent {
       legend: {
         data: dimensions.slice(1),
       },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: () => '',
+      },
       xAxis: {
         show: false,
       },
