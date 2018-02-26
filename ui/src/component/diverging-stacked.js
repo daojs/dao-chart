@@ -10,11 +10,15 @@ export default class DivergingStacked extends PureComponent {
   }
 
   render() {
-    // [ Date, Negative, Neutral, Positive ]
+    // e.g. [ Date, Negative, Neutral, Positive ]
     const { source } = this.props;
     validate(source);
 
     const dimensions = _.first(source);
+    if (_.size(dimensions) !== 4) {
+      throw new Error('DivergingStacked chart data source should have 4 columns, e.g. Date, Negative, Neutral, Positive');
+    }
+
     // Add a transparent series so that the center points of neutral could be at same x value
     const dummySeries = _.map(source.slice(1), row => (_.nth(row, 1) + (_.nth(row, 2) / 2)));
     const maxDummy = _.max(dummySeries) + 5; // 5 is the minimum transparent bar value
