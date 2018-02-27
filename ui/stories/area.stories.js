@@ -4,11 +4,11 @@ import { shallow } from 'enzyme';
 import expect from 'expect';
 import { storiesOf, specs, describe, it } from '../.storybook/facade';
 import Area from '../src/component/area';
-import { source } from './data';
+import { areaSource } from './data';
 
 storiesOf('Area Chart', module)
   .add('Simple area', () => {
-    const story = <Area source={source} />;
+    const story = <Area source={areaSource} />;
 
     specs(() => describe('Simple area', () => {
       it('should have type ReactEcharts', () => {
