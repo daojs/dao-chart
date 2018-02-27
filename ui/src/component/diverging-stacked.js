@@ -10,20 +10,33 @@ export default class DivergingStacked extends PureComponent {
   }
 
   render() {
-    // e.g. [ Date, Negative, Neutral, Positive ]
+    /** Data column is like below:
+     * [ Date, Negative, Neutral, Positive ]
+     * or
+     * ['Date', 'Strong negative', 'Negative', 'Neutral', 'Positive', 'Strong positive']
+     */
     const { source } = this.props;
     validate(source);
 
     const dimensions = _.first(source);
-    if (_.size(dimensions) !== 4) {
-      throw new Error('DivergingStacked chart data source should have 4 columns, e.g. Date, Negative, Neutral, Positive');
+
+    if (dimensions.length % 2 !== 0) {
+      throw new Error('The attitude columns should be 2x + 1, where 1 refers to neutral column');
     }
 
     // Add a transparent series so that the center points of neutral could be at same x value
-    const dummySeries = _.map(source.slice(1), row => (_.nth(row, 1) + (_.nth(row, 2) / 2)));
-    const maxDummy = _.max(dummySeries) + 5; // 5 is the minimum transparent bar value
+    const neutralIndex = dimensions.length / 2;
+    const dummySeries = _.map(source.slice(1), row =>
+      _.reduce(row, (memo, item, index) => {
+        if (index === 0 || index > neutralIndex) {
+          return memo;
+        }
 
+        return index < neutralIndex ? memo + item : memo + (item / 2);
+      }, 0));
+    const maxDummy = _.max(dummySeries) + 5; // 5 is the minimum transparent bar value
     const transparentColumn = _.map(dummySeries, value => (maxDummy - value));
+
     // Insert transparent series at 2nd column of source,
     // so the stack bar starts from transparent series
     const newSource = _.map(source, (item, index) =>
@@ -31,6 +44,7 @@ export default class DivergingStacked extends PureComponent {
 
     // transpose 2d-array, so the first row is Y, the other rows are series
     const transposedData = _.zip(...newSource);
+
     const option = {
       legend: {
         data: dimensions.slice(1),
@@ -58,8 +72,10 @@ export default class DivergingStacked extends PureComponent {
           type: 'bar',
           stack: 'total',
           data: series.slice(1),
+          // set z so markline will be under bar
+          z: 10,
         },
-        // if it is transparent series, set color as transparent, otherwise show label
+        // If it is transparent/dummy series, set color as transparent, otherwise show label
         index === 0 ?
           {
             itemStyle: {
@@ -71,6 +87,25 @@ export default class DivergingStacked extends PureComponent {
                 barBorderColor: 'rgba(0,0,0,0)',
                 color: 'rgba(0,0,0,0)',
               },
+            },
+            // draw markline to accross neutral bars
+            markLine: {
+              silent: true,
+              symbol: '',
+              label: {
+                normal: {
+                  show: false,
+                },
+              },
+              lineStyle: {
+                color: 'rgb(0,0,0)',
+                type: 'solid',
+              },
+              data: [
+                {
+                  xAxis: maxDummy,
+                },
+              ],
             },
           } :
           {
