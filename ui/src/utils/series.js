@@ -25,6 +25,7 @@ export function getDimensionSeries({
 export function getDataOption({
   source = [],
   defaultSeriesOpt = {},
+  defaultSeriesDataOpt = {},
 }) {
   const columns = _.zip(...source);
   const seriesLength = columns.length - 1;
@@ -38,14 +39,22 @@ export function getDataOption({
     },
     series: _.chain(columns)
       .slice(1)
-      .map((column, index) => _.defaults(
+      .map((column, seriesIndex) => _.defaults(
         {},
         _.isFunction(defaultSeriesOpt)
-          ? defaultSeriesOpt(index, seriesLength)
+          ? defaultSeriesOpt(seriesIndex, seriesLength)
           : defaultSeriesOpt,
         {
           name: _.first(column),
-          data: _.slice(column, 1),
+          data: _.chain(column)
+            .slice(1)
+            .map(value => _.defaults(
+              { value },
+              _.isFunction(defaultSeriesDataOpt)
+                ? defaultSeriesDataOpt(value)
+                : defaultSeriesDataOpt,
+            ))
+            .value(),
         },
       ))
       .value(),

@@ -9,5 +9,5 @@ storiesOf('Line Chart', module)
     <Line source={timeSource} />
   ))
   .add('Target line', () => (
-    <TargetLine target={100} source={timeSource} />
+    <TargetLine target={80} source={timeSource} />
   ));
