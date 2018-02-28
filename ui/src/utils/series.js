@@ -24,10 +24,8 @@ export function getDimensionSeries({
 // For legacy series for the chart not support data set
 export function getDataOption({
   source = [],
-  type,
   defaultSeriesOpt = {},
 }) {
-  const typeObj = type ? { type } : {};
   const columns = _.zip(...source);
 
   return {
@@ -39,10 +37,14 @@ export function getDataOption({
     },
     series: _.chain(columns)
       .slice(1)
-      .map(column => _.defaults({}, typeObj, defaultSeriesOpt, {
-        name: _.first(column),
-        data: _.slice(column, 1),
-      }))
+      .map((column, index) => _.defaults(
+        {},
+        _.isFunction(defaultSeriesOpt) ? defaultSeriesOpt(index, columns.length) : defaultSeriesOpt,
+        {
+          name: _.first(column),
+          data: _.slice(column, 1),
+        },
+      ))
       .value(),
   };
 }
