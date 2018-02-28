@@ -27,6 +27,7 @@ export function getDataOption({
   defaultSeriesOpt = {},
 }) {
   const columns = _.zip(...source);
+  const seriesLength = columns.length - 1;
 
   return {
     axis: {
@@ -39,7 +40,9 @@ export function getDataOption({
       .slice(1)
       .map((column, index) => _.defaults(
         {},
-        _.isFunction(defaultSeriesOpt) ? defaultSeriesOpt(index, columns.length) : defaultSeriesOpt,
+        _.isFunction(defaultSeriesOpt)
+          ? defaultSeriesOpt(index, seriesLength)
+          : defaultSeriesOpt,
         {
           name: _.first(column),
           data: _.slice(column, 1),
