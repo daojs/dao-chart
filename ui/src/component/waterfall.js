@@ -49,9 +49,9 @@ export default class Sankey extends PureComponent {
         const assistant = [];
         const positive = [];
         const negtive = [];
-        //               = assistant[i-1]        (num >= 0)
+        //               = tot[i-1]        (num >= 0)
         // assistant[i]
-        //               = assistant[i-1] + num  (num < 0)
+        //               = tot[i-1] + num  (num < 0)
         _.chain(columns)
           .get(1)
           .slice(1)

@@ -14,7 +14,7 @@ export default class Bullet extends PureComponent {
     validate(this.props.source);
     const dataOption = getDataOption({
       source,
-      defaultSeriesOpt: (index, total) => {
+      defaultSeriesOpt: (() => {
         const map = {
           0: {
             type: 'bar',
@@ -44,12 +44,12 @@ export default class Bullet extends PureComponent {
             type: 'bar',
             stack: 'total',
             barWidth: 30,
-            color: (rgb => `rgb(${rgb}, ${rgb}, ${rgb})`)(_.round((idx - 2) / (tot - 2) * (255 - 153) + 153)),
+            color: (rgb => `rgb(${rgb}, ${rgb}, ${rgb})`)(_.round((idx - 2) / (tot - 2) * (255 - 153) + 153)), // eslint-disable-line
           }),
         };
 
-        return map[index] || map.default(index, total);
-      },
+        return (index, total) => map[index] || map.default(index, total);
+      })(),
     });
 
     const option = _.defaultsDeep({
