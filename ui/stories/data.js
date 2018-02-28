@@ -8,7 +8,7 @@ export const source = [
 
 // area chart shows the movement of metrics by time
 // so here we put time as x axis
-export const areaSource = [
+export const timeSource = [
   ['time', 'Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
   ['2015', 43.3, 83.1, 86.4, 72.4],
   ['2016', 85.8, 73.4, 65.2, 53.9],
