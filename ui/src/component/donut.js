@@ -32,7 +32,7 @@ export default class Donut extends PureComponent {
       return null;
     }
 
-    let option = {
+    const rawOption = {
       title: {
         text: title,
         subtext: subTitle,
@@ -63,8 +63,44 @@ export default class Donut extends PureComponent {
         },
       ],
     };
-    if (!_.isNull(percent)) {
-      option = _.defaultsDeep({
+
+    const option = _.isNull(percent) ?
+      _.defaultsDeep({
+        dataset: {
+          source,
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {d}%',
+        },
+        legend: hasLegend ?
+          {
+            orient: 'vertical',
+            top: 'middle',
+            right: '5%',
+            formatter: name => _.chain(source)
+              .filter(row => row[0] === name)
+              .map((row) => {
+                const total = _.chain(source)
+                  .slice(1)
+                  .reduce((tot, curRow) => tot + curRow[1], 0)
+                  .value();
+
+                return `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`;
+              })
+              .first()
+              .value(),
+            data: source.slice(1).map(row => ({
+              name: row[0],
+              value: row.join(':'),
+              icon: 'circle',
+            })),
+          } :
+          {
+            show: false,
+          },
+      }, rawOption) :
+      _.defaultsDeep({
         series: [
           {
             data: [
@@ -90,41 +126,7 @@ export default class Donut extends PureComponent {
             ],
           },
         ],
-      }, option);
-    } else {
-      const total = _.chain(source)
-        .slice(1)
-        .reduce((tot, row) => tot + row[1], 0)
-        .value();
-      option = _.defaultsDeep({
-        dataset: {
-          source,
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{b}: {d}%',
-        },
-        legend: hasLegend ?
-          {
-            orient: 'vertical',
-            top: 'middle',
-            right: '5%',
-            formatter: name => _.chain(source)
-              .filter(row => row[0] === name)
-              .map(row => `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`)
-              .first()
-              .value(),
-            data: source.slice(1).map(row => ({
-              name: row[0],
-              value: row.join(':'),
-              icon: 'circle',
-            })),
-          } :
-          {
-            show: false,
-          },
-      }, option);
-    }
+      }, rawOption);
 
     return (
       <ReactEcharts option={option} />

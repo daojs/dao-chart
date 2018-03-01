@@ -15,7 +15,7 @@ export default class extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { option: {} };
+    this.state = { option: {} }; // eslint-disable-line immutable/no-mutation
     this.convertOption(props.meta);
   }
 
