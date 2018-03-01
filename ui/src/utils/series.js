@@ -39,7 +39,7 @@ export function getDataOption({
           ? defaultSeriesOpt(seriesIndex, seriesLength)
           : defaultSeriesOpt,
         {
-          name: _.first(column),
+          name: _.isObject(column[0]) ? column[0].name : column[0],
           data: _.chain(column)
             .slice(1)
             .map(value => _.defaults(
