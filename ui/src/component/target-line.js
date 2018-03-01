@@ -24,30 +24,32 @@ export default class TargetLine extends PureComponent {
           type: 'line',
         };
         if (index === 0) {
-          opt.markLine = {
-            silent: true,
-            symbol: '',
-            lineStyle: {
-              type: 'solid',
-            },
-            label: {
-              show: false,
-            },
-            data: [
-              {
-                yAxis: target,
+          return _.defaults(opt, {
+            markLine: {
+              silent: true,
+              symbol: '',
+              lineStyle: {
+                type: 'solid',
               },
-            ],
-          };
+              label: {
+                show: false,
+              },
+              data: [
+                {
+                  yAxis: target,
+                },
+              ],
+            },
+          });
         }
         return opt;
       },
       defaultSeriesDataOpt: (value) => {
-        let opt = {
+        const opt = {
           symbolSize: 6,
         };
         if (value > target) {
-          opt = _.defaults(opt, {
+          return _.defaults(opt, {
             symbol: 'circle',
             itemStyle: {
               color: 'green',
@@ -55,7 +57,7 @@ export default class TargetLine extends PureComponent {
           });
         }
         if (value < target) {
-          opt = _.defaults(opt, {
+          return _.defaults(opt, {
             symbol: 'rect',
             symbolRotate: 45,
             itemStyle: {

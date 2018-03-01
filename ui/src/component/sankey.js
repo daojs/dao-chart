@@ -29,8 +29,8 @@ export default class Sankey extends PureComponent {
         links: (() => {
           const links = [];
 
-          for (let i = 1; i < source.length; i += 1) {
-            for (let j = 1; j < source.length; j += 1) {
+          for (let i = 1; i < source.length; i += 1) { // eslint-disable-line immutable/no-let
+            for (let j = 1; j < source.length; j += 1) { // eslint-disable-line immutable/no-let
               if (source[i][j] > 0) {
                 links.push({
                   source: source[0][i],

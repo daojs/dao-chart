@@ -82,11 +82,11 @@ export default class Donut extends PureComponent {
               .filter(row => row[0] === name)
               .map((() => {
                 const total = _.chain(source)
-                    .slice(1)
-                    .reduce((tot, curRow) => tot + curRow[1], 0)
-                    .value();
+                  .slice(1)
+                  .reduce((tot, curRow) => tot + curRow[1], 0)
+                  .value();
 
-                return (row) => `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`;
+                return row => `${row[0]} | ${_.round((row[1] / total) * 100, 2)}%    ${row[1]}`;
               })())
               .first()
               .value(),
