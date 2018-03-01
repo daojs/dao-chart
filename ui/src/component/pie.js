@@ -6,14 +6,21 @@ import { validate } from '../utils';
 
 export default class Pie extends PureComponent {
   static propTypes = {
-    source: PropTypes.arrayOf(PropTypes.array).isRequired,
+    source: PropTypes.arrayOf(PropTypes.array),
+    onSlicerChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    source: null,
+    onSlicerChange: _.noop,
   }
 
   render() {
     const {
       source,
+      onSlicerChange,
     } = this.props;
-    validate(this.props.source);
+    validate(source);
 
     const total = _.chain(source)
       .slice(1)
@@ -62,8 +69,12 @@ export default class Pie extends PureComponent {
       },
     };
 
+    const onEvents = {
+      click: args => onSlicerChange(_.defaults({}, { properties: _.first(source) }, args)),
+    };
+
     return (
-      <ReactEcharts option={option} />
+      <ReactEcharts option={option} onEvents={onEvents} />
     );
   }
 }
