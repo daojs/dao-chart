@@ -11,10 +11,7 @@ export default class Section extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      source: [],
-      history: [],
-    };
+    this.state = { source: [], history: [] }; // eslint-disable-line immutable/no-mutation
   }
 
   componentDidMount() {
