@@ -10,5 +10,11 @@ install:
   - cd mt && yarn && cd ..
 
 script:
-  - yarn run ui-gated
-  - yarn run mt-gated
+  - cd ui
+  - yarn run lint
+  - yarn run build
+  - yarn run test
+  - cd ..
+  - cd mt
+  - yarn run lint
+  - yarn test
