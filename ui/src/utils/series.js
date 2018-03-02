@@ -6,17 +6,11 @@ export function getDimensionSeries({
   type,
   defaultSeriesOpt = {},
 }) {
-  let typeObj = { type };
-
-  if (!type) {
-    typeObj = {};
-  }
+  const typeObj = _.isString(type) ? { type } : {};
 
   return _.map(dimensions.slice(1), (name) => {
-    let dim = name;
-    if (_.isString(name)) {
-      dim = { name };
-    }
+    const dim = _.isString(name) ? { name } : name;
+
     return _.defaults({}, typeObj, defaultSeriesOpt, dim);
   });
 }

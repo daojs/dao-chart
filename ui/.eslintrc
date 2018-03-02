@@ -11,6 +11,9 @@
     "browser": true
   },
   "extends": "airbnb",
+  "plugins": [
+    "immutable"
+  ],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -33,6 +36,8 @@
     ],
     "import/prefer-default-export": 0,
     "linebreak-style": 0,
-    "jsx-a11y/anchor-is-valid": 0
+    "jsx-a11y/anchor-is-valid": 0,
+    "immutable/no-let": "error",
+    "immutable/no-mutation": "error"
   }
 }
