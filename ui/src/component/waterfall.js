@@ -21,12 +21,9 @@ export default class Sankey extends PureComponent {
           type: 'shadow',
         },
         formatter(params) {
-          let target;
-          if (_.get(params, '[1].value') !== '-') {
-            target = _.get(params, 1);
-          } else {
-            target = _.get(params, 2);
-          }
+          const target = _.get(params, '[1].value') !== '-'
+            ? _.get(params, 1)
+            : _.get(params, 2);
           return `${target.name}<br/>${target.seriesName} : ${target.value}`;
         },
       },
