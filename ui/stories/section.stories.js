@@ -1,17 +1,11 @@
 import React from 'react';
 import { storiesOf } from '../.storybook/facade';
-import Section from '../src/section';
+import Story from '../src/story';
+import StoryConfig from './story.config';
 
-
-storiesOf('Section', module)
-  .add('pie chart', () => (
-    <Section config={{
-      dimensions: {
-        渠道: {
-          toSlicer: 'channel',
-        },
-      },
-      chartType: 'pie',
-    }}
+storiesOf('Story', module)
+  .add('story prototype', () => (
+    <Story
+      {...StoryConfig}
     />
   ));
