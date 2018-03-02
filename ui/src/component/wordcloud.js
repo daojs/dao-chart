@@ -22,6 +22,7 @@ export default class WordCloud extends PureComponent {
         {
           type: 'wordCloud',
           shape: 'circle',
+          // word cloud chart does not support dataset
           data: _.chain(source).slice(1).map(row => ({
             name: row[0],
             value: row[1],
