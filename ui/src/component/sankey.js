@@ -21,27 +21,21 @@ export default class Sankey extends PureComponent {
       series: {
         type: 'sankey',
         layout: 'none',
-        data: _.chain(source)
-          .first()
-          .slice(1)
+        data: _.chain(_.zip(...source))
+          .slice(0, 2)
+          .map(column => column.slice(1))
+          .flatten()
+          .uniq()
           .map(name => ({ name }))
           .value(),
-        links: (() => {
-          const links = [];
-
-          for (let i = 1; i < source.length; i += 1) { // eslint-disable-line immutable/no-let
-            for (let j = 1; j < source.length; j += 1) { // eslint-disable-line immutable/no-let
-              if (source[i][j] > 0) {
-                links.push({
-                  source: source[0][i],
-                  target: source[0][j],
-                  value: source[i][j],
-                });
-              }
-            }
-          }
-          return links;
-        })(),
+        links: _.chain(source)
+          .slice(1)
+          .map(row => ({
+            source: row[0],
+            target: row[1],
+            value: row[2],
+          }))
+          .value(),
       },
     };
 
