@@ -13,7 +13,7 @@ export default {
       dimensions: {
         地区: { fromSlicer: '特定地区' },
       },
-      mainDimensions: ['地区'], // enrich
+      mainDimensions: ['地区'], // enrich, used to figure which dimensions' value not used to extend data
     }, {
       value: '售价',
       dimensions: {
