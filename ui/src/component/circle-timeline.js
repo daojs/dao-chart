@@ -2,17 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate } from '../utils';
+import { validate, lineScale as lineScaleFactory } from '../utils';
 
-
-const lineScale = (min, max, data) => {
-  // TODO: find a better way to map a serize of data to a proper range
-  const a = (50 - 10) / (max - min);
-  const b = 10 - (a * min);
-
-  return (a * data) + b;
-};
-
+const lineScale = _.partial(lineScaleFactory, 10, 50);
 
 const offsetTop = 10;
 const offsetBottom = 10;
