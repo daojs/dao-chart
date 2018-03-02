@@ -13,37 +13,26 @@ const lineScale = (min, max, data) => {
   return (a * data) + b;
 };
 
-const topPosition = (index, total) => `${_.round(10 + ((((index * 2) + 1) / (total * 2)) * 80), 2)}%`;
 
-const getDataOption = ({
-  source,
-  titleOption = _.noop,
-  axisOption = _.noop,
-  seriesOption = _.noop,
-}) => {
-  const title = [];
-  const singleAxis = [];
-  const series = [];
+const offsetTop = 10;
+const offsetBottom = 10;
+const chartHeight = 100 - offsetTop - offsetBottom;
 
-  const groupedSource = _.chain(source)
-    .slice(1)
-    .groupBy(row => row[0])
-    .value();
-  const total = _.size(groupedSource);
-
-  _.reduce(groupedSource, (index, group, groupName) => {
-    title.push(titleOption(group, groupName, index, total));
-    singleAxis.push(axisOption(group, groupName, index, total));
-    series.push(seriesOption(group, groupName, index, total));
-    return index + 1;
-  }, 0);
-
-  return {
-    title,
-    singleAxis,
-    series,
-  };
+const axisTop = (index, total) => {
+  const position = offsetTop + ((index / total) * chartHeight);
+  return `${_.round(position, 2)}%`;
 };
+
+const axisHeight = (total) => {
+  const height = chartHeight / total;
+  return `${_.round(height, 2)}%`;
+};
+
+const axisMiddle = (index, total) => {
+  const position = offsetTop + ((((index * 2) + 1) / (total * 2)) * chartHeight);
+  return `${_.round(position, 2)}%`;
+};
+
 
 export default class CircleTimeline extends PureComponent {
   static propTypes = {
@@ -54,73 +43,90 @@ export default class CircleTimeline extends PureComponent {
     const { source } = this.props;
     validate(source);
 
-    const option = _.defaultsDeep(getDataOption({
-      source,
-      titleOption: (group, groupName, index, total) => ({
-        text: groupName,
-        textBaseline: 'middle',
-        top: topPosition(index, total),
-      }),
-      axisOption: (group, groupName, index, total) => ({
-        left: '20%',
-        type: 'category',
-        boundaryGap: false,
-        data: _.chain(group).map(row => row[1]).uniq().value(),
-        top: `${_.round(10 + ((index / total) * 80), 2)}%`,
-        height: `${_.round(80 / total, 2)}%`,
-        axisLine: {
-          show: index === total - 1,
-        },
-        axisTick: {
-          show: index === total - 1,
-          inside: true,
-        },
-        axisLabel: {
-          show: index === total - 1,
-        },
-        splitLine: {
-          show: false,
-        },
-      }),
-      seriesOption: (group, groupName, index, total) => ({
-        singleAxisIndex: index,
-        type: 'scatter',
-        coordinateSystem: 'singleAxis',
-        data: _.chain(group).map((row, idx) => ([idx, row[2]])).value(),
-        symbolSize: (() => {
-          const columns = _.zip(...source);
-          const dataValues = columns[2].slice(1);
-          const minValue = _.min(dataValues);
-          const maxValue = _.max(dataValues);
+    const columns = _.zip(...source);
 
-          return dataItem => lineScale(minValue, maxValue, dataItem[1]);
-        })(),
-        markLine: {
-          silent: true,
-          symbol: '',
-          lineStyle: {
-            color: '#000',
-            type: 'solid',
-          },
-          data: [
-            [
-              {
-                x: '15%',
-                y: topPosition(index, total),
+    const seriesColumns = _.slice(columns, 1);
+    const seriesLength = _.size(seriesColumns);
+    const seriesData = _.map(seriesColumns, column => _.slice(column, 1));
+
+    const axisColumn = _.first(columns);
+    const axisData = _.slice(axisColumn, 1);
+
+    const option = _.defaultsDeep(
+      _.chain(seriesColumns)
+        .reduce((memo, column, index) => {
+          memo.title.push({
+            text: column[0],
+            textBaseline: 'middle',
+            top: axisMiddle(index, seriesLength),
+          });
+          memo.singleAxis.push({
+            left: '20%',
+            type: 'category',
+            boundaryGap: false,
+            data: axisData,
+            top: axisTop(index, seriesLength),
+            height: axisHeight(seriesLength),
+            axisLine: {
+              show: index === seriesLength - 1,
+            },
+            axisTick: {
+              show: index === seriesLength - 1,
+              inside: true,
+            },
+            axisLabel: {
+              show: index === seriesLength - 1,
+            },
+            splitLine: {
+              show: false,
+            },
+          });
+          memo.series.push({
+            singleAxisIndex: index,
+            type: 'scatter',
+            coordinateSystem: 'singleAxis',
+            data: _.zip(axisData, seriesData[index]),
+            symbolSize: (() => {
+              const flattenData = _.flatten(seriesData);
+              const minValue = _.min(flattenData);
+              const maxValue = _.max(flattenData);
+
+              return dataItem => lineScale(minValue, maxValue, dataItem[1]);
+            })(),
+            markLine: {
+              silent: true,
+              symbol: '',
+              lineStyle: {
+                color: '#000',
+                type: 'solid',
               },
-              {
-                x: '100%',
-                y: topPosition(index, total),
-              },
-            ],
-          ],
+              data: [
+                [
+                  {
+                    x: '15%',
+                    y: axisMiddle(index, seriesLength),
+                  },
+                  {
+                    x: '100%',
+                    y: axisMiddle(index, seriesLength),
+                  },
+                ],
+              ],
+            },
+          });
+          return memo;
+        }, {
+          title: [],
+          singleAxis: [],
+          series: [],
+        })
+        .value(),
+      {
+        tooltip: {
+          formatter: params => `${params.name}: ${params.data[1]}`,
         },
-      }),
-    }), {
-      tooltip: {
-        formatter: params => `${params.name}: ${params.data[1]}`,
       },
-    });
+    );
 
     return (
       <ReactEcharts option={option} {...this.props} />
