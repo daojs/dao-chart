@@ -7,12 +7,20 @@ import { validate, getDimensionSeries } from '../utils';
 export default class Line extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array).isRequired,
+    title: PropTypes.objectOf(PropTypes.any),
+    onSlicerChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onSlicerChange: _.noop,
+    title: {},
   }
 
   render() {
     validate(this.props.source);
     const dimensions = _.first(this.props.source);
     const option = {
+      title: this.props.title,
       legend: {},
       tooltip: {
         trigger: 'axis',
@@ -34,8 +42,16 @@ export default class Line extends PureComponent {
       }),
     };
 
+    const onEvents = {
+      click: args =>
+        this.props.onSlicerChange(_.defaults(
+          {}, { dataObj: _.zipObject(_.first(this.props.source), args.data) },
+          args,
+        )),
+    };
+
     return (
-      <ReactEcharts option={option} {...this.props} />
+      <ReactEcharts option={option} onEvents={onEvents} {...this.props} />
     );
   }
 }
