@@ -38,7 +38,7 @@ export default class Story extends Component {
       });
   }
 
-  onSlicerChange(args) {
+  onSlicerChange = (args) => {
   // update slicer here
     const { dimensionMap, dataObj } = args;
     const slicers = _.cloneDeep(this.state.slicers);
@@ -61,7 +61,7 @@ export default class Story extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h1>{this.props.description}</h1>
         <Slicers slicers={this.state.slicers} />
         <ReactGridLayout
@@ -77,7 +77,7 @@ export default class Story extends Component {
           {_.map(this.props.items, section => (
             <div key={section.id}>
               <Section
-                onSlicerChange={args => this.onSlicerChange(args)}
+                onSlicerChange={this.onSlicerChange}
                 section={section}
                 slicers={this.state.slicers}
                 style={{
@@ -87,6 +87,6 @@ export default class Story extends Component {
             </div>
           ))}
         </ReactGridLayout>
-      </div>);
+      </React.Fragment>);
   }
 }
