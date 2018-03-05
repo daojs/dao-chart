@@ -7394,7 +7394,7 @@ react-reconciler@^0.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-resizable@1.x:
+react-resizable@1.x, react-resizable@^1.7.5:
   version "1.7.5"
   resolved "https://registry.yarnpkg.com/react-resizable/-/react-resizable-1.7.5.tgz#83eb75bb3684da6989bbbf4f826e1470f0af902e"
   dependencies:
