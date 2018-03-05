@@ -18,6 +18,7 @@ export default class Section extends Component {
     section: PropTypes.objectOf(any).isRequired,
     slicers: PropTypes.objectOf(any),
     onSlicerChange: PropTypes.func,
+    style: PropTypes.objectOf(any).isRequired,
   }
 
   static defaultProps = {
@@ -78,6 +79,7 @@ export default class Section extends Component {
             text: description,
           }}
           chartType={chartType}
+          style={this.props.style}
         />}
       </div>);
   }

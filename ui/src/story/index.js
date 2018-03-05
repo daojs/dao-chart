@@ -8,6 +8,8 @@ import { getLayout, setLayout } from '../repository';
 import Section from './section';
 import Slicers from './slicers';
 
+const rowHeight = 30;
+
 export default class Story extends Component {
   static propTypes = {
     description: PropTypes.string,
@@ -66,8 +68,9 @@ export default class Story extends Component {
           className="layout"
           layout={this.state.layout}
           cols={12}
-          rowHeight={30}
+          rowHeight={rowHeight}
           width={1200}
+          margin={[0, 0]}
           onDragStop={newLayout => this.onLayoutChange(newLayout)}
           onResizeStop={newLayout => this.onLayoutChange(newLayout)}
         >
@@ -77,6 +80,9 @@ export default class Story extends Component {
                 onSlicerChange={args => this.onSlicerChange(args)}
                 section={section}
                 slicers={this.state.slicers}
+                style={{
+                  height: `${_.get(_.find(this.state.layout, { i: section.id.toString() }), 'h', 0) * rowHeight}px`,
+                }}
               />
             </div>
           ))}
