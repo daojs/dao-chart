@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Pie from './pie';
-import Compare from './compare';
+import Line from './line';
+import Map from './map';
+import Spin from './spine';
 
 const chartMapper = {
   pie: Pie,
-  compare: Compare,
+  line: Line,
+  map: Map,
+  spin: Spin,
 };
 
 export default class extends PureComponent {

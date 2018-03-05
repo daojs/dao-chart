@@ -70,7 +70,11 @@ export default class Pie extends PureComponent {
     };
 
     const onEvents = {
-      click: args => onSlicerChange(_.defaults({}, { properties: _.first(source) }, args)),
+      click: args =>
+        this.props.onSlicerChange(_.defaults(
+          {}, { dataObj: _.zipObject(_.first(this.props.source), args.data) },
+          args,
+        )),
     };
 
     return (
