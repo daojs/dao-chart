@@ -92,7 +92,6 @@ class Section extends Component {
     const { chartType, description } = this.props.section;
     const { height } = this.props.style;
 
-
     return (
       <div style={[styles.section, { height }]}>
         {_.isEmpty(this.state.source) ? null :
