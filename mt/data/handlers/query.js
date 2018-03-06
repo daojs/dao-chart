@@ -27,6 +27,23 @@ function parseDimensions(dimensions) {
   }, {});
 }
 
+function formatResponse(response, dimensionsToCollapse = []) {
+  const data = _.map(response, item => [
+    _.first(item.DataPoints).Value,
+    ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
+    _.first(item.DataPoints).Timestamp
+  ]).slice(0, 4);
+
+  const firstData = _.result(_.first(response), 'SerieId');
+
+  const meta = {
+    headers: [firstData.Metrics, ..._.xor(_.keys(firstData.TagSet), dimensionsToCollapse), 'time'],
+    collaspsedColumns: _.map(dimensionsToCollapse, dKey => ({ [dKey]: firstData.TagSet[dKey] }))
+  };
+
+  return { data, meta };
+}
+
 const botanaApiDomain = 'botanametricsservice.kpdeus2.p.azurewebsites.net';
 const botanaApiPath = 'api/Metrics/Get';
 
@@ -41,10 +58,11 @@ module.exports = async function(parameters) {
   });
   const uri = `http://${botanaApiDomain}/${botanaApiPath}?${queryString}&fields=[]`;
 
-  const response = (await rp({
+  const dimensionsToCollapse = _.map(_.filter(dimensions, d => d[0] === 'eq'), d => d[1]);
+  const response = formatResponse(await rp({
     uri,
     json: true
-  }));
+  }), dimensionsToCollapse);
 
-  return { response, dimensions };
+  return response;
 };
