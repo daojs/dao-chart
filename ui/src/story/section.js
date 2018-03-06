@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes, { any } from 'prop-types';
 import _ from 'lodash';
+import Radium from 'radium';
 import { getMetrics } from '../repository';
 import Chart from '../component';
+
+const styles = {
+  section: {
+    ':hover': {
+      boxShadow: '0 0 5px #aaa',
+    },
+  },
+};
 
 /**
  * slicers: {},
@@ -13,7 +22,7 @@ import Chart from '../component';
  * },
  * onSlicerChange = function
 */
-export default class Section extends Component {
+class Section extends Component {
   static propTypes = {
     section: PropTypes.objectOf(any).isRequired,
     slicers: PropTypes.objectOf(any),
@@ -28,11 +37,10 @@ export default class Section extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      source: [],
+    };
     this.dimensionMap = {};
-  }
-
-  state = {
-    source: [],
   }
 
   componentDidMount() {
@@ -71,7 +79,7 @@ export default class Section extends Component {
     const { chartType, description } = this.props.section;
 
     return (
-      <div>
+      <div style={[styles.section]}>
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
@@ -85,3 +93,5 @@ export default class Section extends Component {
       </div>);
   }
 }
+
+export default Radium(Section);

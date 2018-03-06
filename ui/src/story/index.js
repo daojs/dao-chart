@@ -24,9 +24,12 @@ export default class Story extends Component {
     items: [],
   }
 
-  state = {
-    slicers: this.props.slicers,
-    layout: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      slicers: this.props.slicers,
+      layout: [],
+    };
   }
 
   componentDidMount() {
