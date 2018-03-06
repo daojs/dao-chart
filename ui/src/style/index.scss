@@ -1,0 +1,11 @@
+.react-resizable-handle {
+  opacity: 0;
+}
+
+.section:hover ~ .react-resizable-handle {
+  opacity: 1;
+}
+
+.react-grid-placeholder {
+  display: none;
+}

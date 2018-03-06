@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes, { any } from 'prop-types';
 import _ from 'lodash';
+import Radium from 'radium';
 import { getMetrics } from '../repository';
 import Chart from '../component';
+
+const sectionPadding = 12; // px
+
+const styles = {
+  section: {
+    border: '1px solid #eee',
+    padding: `${sectionPadding}px`,
+    boxSizing: 'border-box',
+    ':hover': {
+      boxShadow: '0 0 5px #aaa',
+    },
+  },
+};
+
+const chartHeight = (sectionHeight) => {
+  const height = (parseInt(sectionHeight, 10) || 0) - (sectionPadding * 2);
+  return `${_.max([height, 0])}px`;
+};
+
 
 /**
  * slicers: {},
@@ -13,11 +33,12 @@ import Chart from '../component';
  * },
  * onSlicerChange = function
 */
-export default class Section extends Component {
+class Section extends Component {
   static propTypes = {
     section: PropTypes.objectOf(any).isRequired,
     slicers: PropTypes.objectOf(any),
     onSlicerChange: PropTypes.func,
+    style: PropTypes.objectOf(any).isRequired,
   }
 
   static defaultProps = {
@@ -67,9 +88,10 @@ export default class Section extends Component {
 
   render() {
     const { chartType, description } = this.props.section;
+    const { height } = this.props.style;
 
     return (
-      <div>
+      <div className="section" style={[styles.section, { height }]}>
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
@@ -78,7 +100,12 @@ export default class Section extends Component {
             text: description,
           }}
           chartType={chartType}
+          style={{
+            height: chartHeight(this.props.style.height),
+          }}
         />}
       </div>);
   }
 }
+
+export default Radium(Section);
