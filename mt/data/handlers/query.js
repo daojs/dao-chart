@@ -7,7 +7,8 @@ function parseDimensions(dimensions) {
     const [operator, dimensionId, ...dimensionValues] = dimension;
 
     if (dimensionId === 'time') {
-      return _.defaults({}, { [{ gt: 'start', lt: 'end' }[operator]]: _.first(dimensionValues) }, memo);
+      const [start, end] = dimensionValues;
+      return _.defaults({}, { start, end }, memo);
     }
 
     if (operator === 'in') {
