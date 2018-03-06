@@ -18,11 +18,11 @@ export function getDimensionSeries({
 // For legacy series for the chart not support data set
 export function getDataOption({
   source = [],
-  type,
   defaultSeriesOpt = {},
+  defaultSeriesDataOpt = {},
 }) {
-  const typeObj = type ? { type } : {};
   const columns = _.zip(...source);
+  const seriesLength = columns.length - 1;
 
   return {
     axis: {
@@ -33,10 +33,24 @@ export function getDataOption({
     },
     series: _.chain(columns)
       .slice(1)
-      .map(column => _.defaults({}, typeObj, defaultSeriesOpt, {
-        name: _.first(column),
-        data: _.slice(column, 1),
-      }))
+      .map((column, seriesIndex) => _.defaults(
+        {},
+        _.isFunction(defaultSeriesOpt)
+          ? defaultSeriesOpt(seriesIndex, seriesLength)
+          : defaultSeriesOpt,
+        {
+          name: _.isObject(column[0]) ? column[0].name : column[0],
+          data: _.chain(column)
+            .slice(1)
+            .map(value => _.defaults(
+              { value },
+              _.isFunction(defaultSeriesDataOpt)
+                ? defaultSeriesDataOpt(value)
+                : defaultSeriesDataOpt,
+            ))
+            .value(),
+        },
+      ))
       .value(),
   };
 }

@@ -14,17 +14,14 @@ export default class Area extends PureComponent {
     validate(source);
     const dataOption = getDataOption({
       source,
-      type: 'line',
       defaultSeriesOpt: {
+        type: 'line',
         stack: 'total',
         areaStyle: { normal: {} },
       },
     });
 
     const option = _.defaultsDeep({
-      xAxis: dataOption.axis,
-      series: dataOption.series,
-    }, {
       legend: {},
       tooltip: {
         trigger: 'axis',
@@ -36,6 +33,9 @@ export default class Area extends PureComponent {
         type: 'category',
         boundaryGap: false,
       },
+    }, {
+      xAxis: dataOption.axis,
+      series: dataOption.series,
     });
 
     console.log(`the options is:  ${JSON.stringify(option.series)}`); //eslint-disable-line

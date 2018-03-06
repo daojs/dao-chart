@@ -7,6 +7,13 @@ import { validate } from '../utils';
 export default class Spine extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array.isRequired).isRequired,
+    title: PropTypes.objectOf(PropTypes.any),
+    onSlicerChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onSlicerChange: _.noop,
+    title: {},
   }
 
   render() {
@@ -28,6 +35,7 @@ export default class Spine extends PureComponent {
      */
     const newSource = _.zip(...source);
     const option = {
+      title: this.props.title,
       legend: {},
       tooltip: {
         trigger: 'axis',
@@ -64,8 +72,18 @@ export default class Spine extends PureComponent {
       })),
     };
 
+    const onEvents = {
+      click: args =>
+        this.props.onSlicerChange(_.defaults({}, {
+          dataObj: {
+            [_.first(this.props.source)[0]]: args.name,
+            [args.seriesName]: args.value,
+          },
+        }, args)),
+    };
+
     return (
-      <ReactEcharts option={option} {...this.props} />
+      <ReactEcharts option={option} onEvents={onEvents} {...this.props} />
     );
   }
 }

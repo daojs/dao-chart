@@ -2,14 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
+import { lineScale as lineScaleFactory } from '../utils';
 
-const lineScale = (min, max, data) => {
-  // TODO: find a better way to map a serize of data to a proper range
-  const a = (80 - 10) / (max - min);
-  const b = 10 - (a * min);
-
-  return (a * data) + b;
-};
+// TODO: find a better way to map a serize of data to a proper range
+const lineScale = _.partial(lineScaleFactory, 10, 80);
 
 export default class Bubble extends PureComponent {
   static propTypes = {
