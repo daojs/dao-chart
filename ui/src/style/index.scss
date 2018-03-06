@@ -5,3 +5,7 @@
 .section:hover ~ .react-resizable-handle {
   opacity: 1;
 }
+
+.react-grid-placeholder {
+  display: none;
+}
