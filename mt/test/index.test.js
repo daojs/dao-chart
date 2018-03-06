@@ -24,7 +24,7 @@ describe('App', () => {
     }`;
 
     request(app)
-      .post('/api')
+      .post('/graphql')
       .send({ query })
       .set('Accept', 'application/json')
       .expect(200)
