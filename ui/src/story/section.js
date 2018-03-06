@@ -9,8 +9,6 @@ const sectionPadding = 12; // px
 
 const styles = {
   section: {
-    display: 'flex',
-    flexDirection: 'column',
     border: '1px solid #eee',
     padding: `${sectionPadding}px`,
     boxSizing: 'border-box',
@@ -93,7 +91,7 @@ class Section extends Component {
     const { height } = this.props.style;
 
     return (
-      <div style={[styles.section, { height }]}>
+      <div className="section" style={[styles.section, { height }]}>
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
