@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes, { any } from 'prop-types';
 import _ from 'lodash';
-import ReactGridLayout from 'react-grid-layout';
+import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { getLayout, setLayout } from '../repository';
 import Section from './section';
 import Slicers from './slicers';
 
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const rowHeight = 30; // px
 const marginX = 10; // px
 const marginY = 10; // px
 
-const sectionHeight = (layouts, sectionId) => {
-  const sectionLayout = _.find(layouts, { i: sectionId.toString() }) || {};
+const sectionHeight = (layout, sectionId) => {
+  const sectionLayout = _.find(layout, { i: sectionId.toString() }) || {};
   const rows = _.get(sectionLayout, 'h', 0);
   const height = (rows * (rowHeight + marginY)) - marginY;
   return `${_.max([height, 0])}px`;
@@ -64,7 +65,7 @@ export default class Story extends Component {
     });
   }
 
-  onLayoutChange(newLayout) {
+  onLayoutChange = (newLayout) => {
     this.setState({ layout: newLayout });
     setLayout(this.props.id, newLayout);
   }
@@ -74,15 +75,15 @@ export default class Story extends Component {
       <React.Fragment>
         <h1>{this.props.description}</h1>
         <Slicers slicers={this.state.slicers} />
-        <ReactGridLayout
+        <ResponsiveReactGridLayout
           className="layout"
-          layout={this.state.layout}
-          cols={12}
+          layouts={{ lg: this.state.layout }}
+          breakpoints={{ lg: 1200 }}
+          cols={{ lg: 12 }}
           rowHeight={rowHeight}
-          width={1200}
           margin={[marginX, marginY]}
-          onDrag={newLayout => this.onLayoutChange(newLayout)}
-          onResize={newLayout => this.onLayoutChange(newLayout)}
+          onDrag={this.onLayoutChange}
+          onResize={this.onLayoutChange}
         >
           {_.map(this.props.items, section => (
             <div key={section.id}>
@@ -96,7 +97,7 @@ export default class Story extends Component {
               />
             </div>
           ))}
-        </ReactGridLayout>
+        </ResponsiveReactGridLayout>
       </React.Fragment>);
   }
 }
