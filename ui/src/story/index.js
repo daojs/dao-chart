@@ -15,6 +15,7 @@ export default class Story extends Component {
     description: PropTypes.string,
     slicers: PropTypes.objectOf(any),
     items: PropTypes.arrayOf(PropTypes.object),
+    id: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
@@ -23,12 +24,9 @@ export default class Story extends Component {
     items: [],
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      slicers: this.props.slicers,
-      layout: [],
-    };
+  state = {
+    slicers: this.props.slicers,
+    layout: [],
   }
 
   componentDidMount() {

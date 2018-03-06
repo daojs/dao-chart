@@ -16,6 +16,6 @@ export function getLayout(storyId) {
 }
 
 export function setLayout(storyId, layout) {
-  layoutStore[storyId] = layout;
+  layoutStore[storyId] = layout; // eslint-disable-line immutable/no-mutation
   return Promise.resolve();
 }

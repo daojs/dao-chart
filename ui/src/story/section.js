@@ -28,10 +28,11 @@ export default class Section extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      source: [],
-    };
     this.dimensionMap = {};
+  }
+
+  state = {
+    source: [],
   }
 
   componentDidMount() {
