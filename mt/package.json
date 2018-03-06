@@ -20,7 +20,10 @@
     "koa-graphql": "^0.7.5",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "query-string": "^5.1.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "eslint": "^4.18.1",
