@@ -7,6 +7,7 @@ import Chart from '../component';
 
 const styles = {
   section: {
+    border: '1px solid #eee',
     ':hover': {
       boxShadow: '0 0 5px #aaa',
     },

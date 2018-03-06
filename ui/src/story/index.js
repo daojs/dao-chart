@@ -8,7 +8,16 @@ import { getLayout, setLayout } from '../repository';
 import Section from './section';
 import Slicers from './slicers';
 
-const rowHeight = 30;
+const rowHeight = 30; // px
+const marginX = 10; // px
+const marginY = 10; // px
+
+const sectionHeight = (layouts, sectionId) => {
+  const sectionLayout = _.find(layouts, { i: sectionId.toString() }) || {};
+  const rows = _.get(sectionLayout, 'h', 0);
+  const height = (rows * (rowHeight + marginY)) - marginY;
+  return `${_.max([height, 0])}px`;
+};
 
 export default class Story extends Component {
   static propTypes = {
@@ -71,9 +80,9 @@ export default class Story extends Component {
           cols={12}
           rowHeight={rowHeight}
           width={1200}
-          margin={[0, 0]}
-          onDragStop={newLayout => this.onLayoutChange(newLayout)}
-          onResizeStop={newLayout => this.onLayoutChange(newLayout)}
+          margin={[marginX, marginY]}
+          onDrag={newLayout => this.onLayoutChange(newLayout)}
+          onResize={newLayout => this.onLayoutChange(newLayout)}
         >
           {_.map(this.props.items, section => (
             <div key={section.id}>
@@ -82,7 +91,7 @@ export default class Story extends Component {
                 section={section}
                 slicers={this.state.slicers}
                 style={{
-                  height: `${_.get(_.find(this.state.layout, { i: section.id.toString() }), 'h', 0) * rowHeight}px`,
+                  height: sectionHeight(this.state.layout, section.id),
                 }}
               />
             </div>
