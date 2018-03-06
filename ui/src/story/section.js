@@ -5,14 +5,26 @@ import Radium from 'radium';
 import { getMetrics } from '../repository';
 import Chart from '../component';
 
+const sectionPadding = 12; // px
+
 const styles = {
   section: {
+    display: 'flex',
+    flexDirection: 'column',
     border: '1px solid #eee',
+    padding: `${sectionPadding}px`,
+    boxSizing: 'border-box',
     ':hover': {
       boxShadow: '0 0 5px #aaa',
     },
   },
 };
+
+const chartHeight = (sectionHeight) => {
+  const height = (parseInt(sectionHeight, 10) || 0) - (sectionPadding * 2);
+  return `${_.max([height, 0])}px`;
+};
+
 
 /**
  * slicers: {},
@@ -78,9 +90,11 @@ class Section extends Component {
 
   render() {
     const { chartType, description } = this.props.section;
+    const { height } = this.props.style;
+
 
     return (
-      <div style={[styles.section]}>
+      <div style={[styles.section, { height }]}>
         {_.isEmpty(this.state.source) ? null :
         <Chart
           source={this.state.source}
@@ -89,7 +103,9 @@ class Section extends Component {
             text: description,
           }}
           chartType={chartType}
-          style={this.props.style}
+          style={{
+            height: chartHeight(this.props.style.height),
+          }}
         />}
       </div>);
   }
