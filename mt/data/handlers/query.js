@@ -13,13 +13,13 @@ function parseDimensions(dimensions) {
 
     if (operator === 'in') {
       return _.defaults({}, {
-        tagset: _.defaults({}, { [dimensionId]: _.first(dimensionValues) }, memo.tagset || {})
+        tagset: _.defaults({}, { [dimensionId]: _.head(dimensionValues) }, memo.tagset || {})
       }, memo);
     }
 
     if (operator === 'eq') {
       return _.defaults({}, {
-        tagset: _.defaults({}, { [dimensionId]: [_.first(dimensionValues)] }, memo.tagset || {})
+        tagset: _.defaults({}, { [dimensionId]: [_.head(dimensionValues)] }, memo.tagset || {})
       }, memo);
     }
 
@@ -29,12 +29,12 @@ function parseDimensions(dimensions) {
 
 function formatResponse(response, dimensionsToCollapse = []) {
   const data = _.map(response, item => [
-    _.first(item.DataPoints).Value,
+    _.head(item.DataPoints).Value,
     ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
-    _.first(item.DataPoints).Timestamp
+    _.head(item.DataPoints).Timestamp
   ]).slice(0, 4);
 
-  const firstData = _.result(_.first(response), 'SerieId');
+  const firstData = _.result(_.head(response), 'SerieId');
 
   const meta = {
     headers: [firstData.Metrics, ..._.xor(_.keys(firstData.TagSet), dimensionsToCollapse), 'time'],
@@ -58,7 +58,7 @@ module.exports = async function(parameters) {
   });
   const uri = `http://${botanaApiDomain}/${botanaApiPath}?${queryString}&fields=[]`;
 
-  const dimensionsToCollapse = _.map(_.filter(dimensions, d => d[0] === 'eq'), d => d[1]);
+  const dimensionsToCollapse = _.map(_.filter(dimensions, { 0: 'eq' }), 1);
   const response = formatResponse(await rp({
     uri,
     json: true
