@@ -13,13 +13,15 @@ export default {
       dimensions: {
         地区: { fromSlicer: '特定地区' },
       },
-      mainDimensions: ['地区'], // enrich, used to figure which dimensions' value not used to extend data
+      mainDimensions: ['地区'], // enrich, used to figure out which dimensions' value not used to extend data
+      nameTemplate: '{{地区}}: {{商品}}', // series name template
     }, {
       value: '售价',
       dimensions: {
         地区: { value: { type: 'enum', values: ['allup'] } },
       },
       mainDimensions: ['地区'], // enrich
+      nameTemplate: 'All up: {{商品}}',
     }],
     dimensions: {
       商品: { fromSlicer: '商品' },

@@ -30,7 +30,7 @@ export default class Section extends Component {
     this.state = {
       source: [],
     };
-    this.dimensionMap = {};
+    this.seriesMapper = {};
   }
 
   componentDidMount() {
@@ -51,7 +51,7 @@ export default class Section extends Component {
     this.props.onSlicerChange({
       ...args,
       section: this.props.section,
-      dimensionMap: this.dimensionMap,
+      seriesMapper: this.seriesMapper,
     });
   }
 
@@ -59,8 +59,8 @@ export default class Section extends Component {
     slicers = {},
     section = {},
   }) {
-    getMetrics({ slicers, section }).then(({ source, dimensionMap }) => {
-      this.dimensionMap = dimensionMap;
+    getMetrics({ slicers, section }).then(({ source, seriesMapper }) => {
+      this.seriesMapper = seriesMapper;
       this.setState({ source });
     });
   }

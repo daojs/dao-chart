@@ -1,7 +1,10 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
+import axios from 'axios';
 
-function convertDimension(area, value) {
+const mtUrl = '';
+
+function dimension2Filter(area, value) { // convert dimension to filter
   const { type, values } = value;
   if (type === 'enum') {
     return ['in', area, values];
@@ -10,93 +13,134 @@ function convertDimension(area, value) {
 }
 
 function convertDimensions({ slicers, dimensions }) {
-  const ret = [];
+  const filters = [];
   _.each(dimensions, (obj, dim) => {
     const { fromSlicer, value } = obj;
     if (fromSlicer) {
-      ret.push(convertDimension(fromSlicer, slicers[fromSlicer].value));
+      filters.push(dimension2Filter(fromSlicer, slicers[fromSlicer].value));
     } else {
-      ret.push(convertDimension(dim, value));
+      filters.push(dimension2Filter(dim, value));
     }
   });
-  return ret;
+  return filters;
 }
 
-function generateMetricRequest({
-  slicers,
-  dimensions,
+// function generateMetricRequest({
+//   slicers,
+//   dimensions,
+//   metric,
+// }) {
+//   const requestDimensions = convertDimensions({ slicers, dimensions })
+//     .concat(convertDimensions({ slicers, dimensions: metric.dimensions }));
+//   return {
+//     name: 'query',
+//     parameters: {
+//       metrics: metric.value,
+//       dimensions: requestDimensions,
+//     },
+//   };
+// }
+
+
+/**
+ * convert data and compute dimension info
+ * sample parameters:
+ * {
+ *  data: [[], [], []],
+ *  meta: {
+ *    headers: [], // list of header ids
+ *    collapsedColumns: [],
+ *  }
+ * }
+ * return new grouped data and header->dimension
+ */
+function convertData({
+  data,
+  meta: {
+    headers,
+    collapsedColumns,
+  },
+  groupDimensions = [],
+  axiesDimensions = [],
   metric,
 }) {
-  const requestDimensions = convertDimensions({ slicers, dimensions })
-    .concat(convertDimensions({ slicers, dimensions: metric.dimensions }));
-  return {
-    name: 'query',
-    parameters: {
-      metrics: metric.value,
-      dimensions: requestDimensions,
-    },
-  };
-}
-
-function generateArray({
-  type,
-  start,
-  end,
-  length = 10,
-  relation = '行政区划',
-  node = 'allup',
-}) {
-  if (type === 'range') {
-    return _.range(2000, 2000 + length);
-  }
-  if (type === 'number') {
-    return _.map(Array(length), () => _.random(start, end));
-  }
-  if (type === 'tree-children') {
-    if (relation === '行政区划') {
-      switch (node) {
-        case 'allup':
-          return ['北京', '江苏', '上海', '新疆', '西藏'];
-        case '江苏':
-          return ['南京', '苏州', '无锡', '常州', '镇江', '南通', '盐城'];
-        case '苏州':
-          return ['吴中区', '园区', '姑苏', '相城'];
-        default:
-          return [];
-      }
+  const results = [];
+  const series = [];
+  _.each(data, (item) => {
+    const obj = _.zipObject(headers, item);
+    const axiesDim = _.pick(obj, axiesDimensions);
+    const groupDim = _.pick(obj, [...groupDimensions, metric.value]);
+    const result = _.find(results, axiesDim);
+    const serie = _.pick(obj, groupDimensions);
+    if (!_.find(series, serie)) {
+      series.push(serie);
     }
-  }
-  return Array(length);
-}
-
-function mockData({ slicers, section }) {
-  const dimName = _.first(section.mainDimensions);
-  const dim = _.result(section.dimensions, dimName);
-  const { fromSlicer, value } = dim;
-  const dimData = generateArray(fromSlicer ? slicers[fromSlicer].value : value);
-  const headers = [dimName];
-  const dimensionMap = { [dimName]: dim };
-  const data = [dimData];
-  _.each(section.metrics, (metric) => {
-    const mainDimName = _.first(metric.mainDimensions);
-    const mainDim = metric.dimensions[mainDimName];
-    if (mainDim.fromSlicer) {
-      headers.push(slicers[mainDim.fromSlicer].value.values.join(','));
+    if (result) {
+      result.children.push(groupDim);
     } else {
-      headers.push(mainDim.value.values.join(','));
+      results.push({
+        ...axiesDim,
+        children: [groupDim],
+      });
     }
-    dimensionMap[_.last(headers)] = mainDim;
-    data.push(generateArray({
-      type: 'number',
-      start: 10,
-      end: 20,
-      length: _.size(dimData),
-    }));
   });
-  return {
-    source: [headers, ..._.unzip(data)],
-    dimensionMap,
-  };
+
+  const nameTemplate = _.template(metric.nameTemplate);
+  const seriesMapper = {};
+
+  const retData = _.map(results, (item) => {
+    const axiesData = _.at(item, axiesDimensions);
+    const metricData = _.map(series, (serie) => {
+      const dataItem = _.find(item.children, serie);
+      if (dataItem) {
+        return dataItem[metric.value];
+      }
+      return undefined;
+    });
+    return [...axiesData, ...metricData];
+  });
+
+  const enrichedSerie = { ...series, ...collapsedColumns };
+  // Translate enum id to string here and then get newHeaders
+
+  const newHeaders = [...axiesDimensions, ..._.map(series, (serie) => {
+    const name = nameTemplate(enrichedSerie);
+    const serieName = _.has(seriesMapper, name) ? _.uniqueId(name) : name;
+
+    _.extend(seriesMapper, {
+      [serieName]: enrichedSerie,
+    });
+  })];
+
+  return Promise.resolve({
+    source: [newHeaders, ...retData],
+    seriesMapper,
+  });
+}
+
+
+function fetchData({
+  slicers,
+  dimensions,
+  metrics,
+  groupDimensions,
+  axiesDimensions,
+}) {
+  axios.post(mtUrl, _.map(metrics, (metric) => {
+    const mergedDimensions = { ...dimensions, ...metric.dimensions };
+    return {
+      name: 'query',
+      parameters: {
+        metrics: metric.value,
+        dimensions: convertDimensions({ slicers, dimensions: mergedDimensions }),
+      },
+    };
+  })).then(responses => Promise.map(responses, (response, index) => convertData({
+    ...response,
+    groupDimensions,
+    axiesDimensions,
+    metric: metrics[index],
+  }))).then(results => results[0]); // TODO: realize results merge before check in
 }
 
 /**
@@ -112,7 +156,8 @@ export function getMetrics({
   slicers = {},
   section = {},
 }) {
-  const { dimensions, metrics } = section;
-  const requests = metrics.map(metric => generateMetricRequest({ slicers, dimensions, metric }));
-  return Promise.resolve(requests).then(() => mockData({ slicers, section }));
+  return fetchData({
+    slicers,
+    ...section,
+  });
 }
