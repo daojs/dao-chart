@@ -18,7 +18,7 @@ export default class Pie extends PureComponent {
   render() {
     const {
       source,
-      onSlicerChange,
+      // onSlicerChange,
     } = this.props;
     validate(source);
 
