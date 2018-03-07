@@ -48,10 +48,13 @@ class Section extends Component {
 
   constructor(props) {
     super(props);
+
+    /* eslint-disable */
     this.state = {
       source: [],
     };
     this.dimensionMap = {};
+    /* eslint-enable */
   }
 
   componentDidMount() {
@@ -81,7 +84,7 @@ class Section extends Component {
     section = {},
   }) {
     getMetrics({ slicers, section }).then(({ source, dimensionMap }) => {
-      this.dimensionMap = dimensionMap;
+      this.dimensionMap = dimensionMap; // eslint-disable-line immutable/no-mutation
       this.setState({ source });
     });
   }

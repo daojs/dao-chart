@@ -69,6 +69,7 @@ function generateArray({
   return Array(length);
 }
 
+/* eslint-disable */
 function mockData({ slicers, section }) {
   const dimName = _.first(section.mainDimensions);
   const dim = _.result(section.dimensions, dimName);
@@ -98,6 +99,7 @@ function mockData({ slicers, section }) {
     dimensionMap,
   };
 }
+/* eslint-enable */
 
 /**
  *   slicers: {},
