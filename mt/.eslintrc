@@ -1,4 +1,7 @@
 {
-  "plugins": ["node"],
-  "extends": ["eslint:recommended", "plugin:node/recommended", "koa"]
+  "plugins": ["node", "lodash"],
+  "extends": ["eslint:recommended", "plugin:node/recommended", "koa", "plugin:lodash/canonical"],
+  "rules": {
+    "lodash/prefer-lodash-method": [2, {"ignoreObjects": ["Promise"]}]
+  }
 }

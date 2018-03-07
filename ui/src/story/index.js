@@ -35,10 +35,13 @@ export default class Story extends Component {
 
   constructor(props) {
     super(props);
+
+    /* eslint-disable immutable/no-mutation */
     this.state = {
       slicers: this.props.slicers,
       layout: [],
     };
+    /* eslint-enable */
   }
 
   componentDidMount() {
