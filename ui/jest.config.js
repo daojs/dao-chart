@@ -11,6 +11,6 @@ module.exports = {
     'enzyme-to-json/serializer',
   ],
   moduleNameMapper: {
-    '\\.(css|less|scss)$': '<rootDir>/.storybook/__mocks__/styleMock.js',
+    '\\.(css|less|scss)$': '<rootDir>/.storybook/__mocks__/style-mock.js',
   },
 };
