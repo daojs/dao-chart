@@ -54,7 +54,6 @@ class Section extends Component {
       source: [],
     };
     this.seriesMapper = {};
-    this.metricMapper = {};
     /* eslint-enable */
   }
 
@@ -77,8 +76,7 @@ class Section extends Component {
     this.props.onSlicerChange({
       ...args,
       section: this.props.section,
-      seriesMapper: this.seriesMapper,
-      metric: this.metricMapper[seriesName],
+      serieInfo: this.seriesMapper[seriesName],
     });
   }
 
@@ -86,9 +84,8 @@ class Section extends Component {
     slicers = {},
     section = {},
   }) {
-    getMetrics({ slicers, section }).then(({ source, seriesMapper, metricMapper }) => {
+    getMetrics({ slicers, section }).then(({ source, seriesMapper }) => {
       this.seriesMapper = seriesMapper; // eslint-disable-line immutable/no-mutation
-      this.metricMapper = metricMapper; // eslint-disable-line immutable/no-mutation
       this.setState({ source });
     });
   }

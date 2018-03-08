@@ -56,11 +56,14 @@ export default class Story extends Component {
 
   onSlicerChange = (args) => {
   // update slicer here
-    const { dimensionMap, dataObj } = args;
+    const { serieInfo, dataObj, section } = args;
     const slicers = _.cloneDeep(this.state.slicers);
 
-    _.each(dataObj, (val, dim) => {
-      if (dimensionMap[dim].toSlicer) {
+    const data = { ...serieInfo.serie, ...dataObj };
+    const metricDimensions = _.get(serieInfo, 'metric.dimensions', {});
+    const dimensionMap = { ...section.dimensions, ...metricDimensions };
+    _.each(data, (val, dim) => {
+      if (_.get(dimensionMap, `${dim}.toSlicer`)) {
         _.set(slicers, `${dimensionMap[dim].toSlicer}.value.values`, [val]);
       }
     });

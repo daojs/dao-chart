@@ -12,6 +12,9 @@ function dimension2Filter(area, value) { // convert dimension to filter
     end,
   } = value;
   if (type === 'enum') {
+    if (values.length === 1) {
+      return ['eq', area, values[0]];
+    }
     return ['in', area, values];
   }
   if (type === 'range') {
@@ -49,19 +52,19 @@ function convertData({
   data,
   meta: {
     headers,
-    collapsedColumns,
+    collaspsedColumns,
   },
   groupDimensions = [],
-  axiesDimensions = [],
+  axisDimensions = [],
   metric,
 }) {
   const results = [];
   const series = [];
   _.each(data, (item) => {
     const obj = _.zipObject(headers, item);
-    const axiesDim = _.pick(obj, axiesDimensions);
+    const axisDim = _.pick(obj, axisDimensions);
     const groupDim = _.pick(obj, [...groupDimensions, metric.value]);
-    const result = _.find(results, axiesDim);
+    const result = _.find(results, axisDim);
     const serie = _.pick(obj, groupDimensions);
     if (!_.find(series, serie)) {
       series.push(serie);
@@ -70,7 +73,7 @@ function convertData({
       result.children.push(groupDim);
     } else {
       results.push({
-        ...axiesDim,
+        ...axisDim,
         children: [groupDim],
       });
     }
@@ -80,7 +83,7 @@ function convertData({
   const seriesMapper = {};
 
   const retData = _.map(results, (item) => {
-    const axiesData = _.at(item, axiesDimensions);
+    const axisData = _.at(item, axisDimensions);
     const metricData = _.map(series, (serie) => {
       const dataItem = _.find(item.children, serie);
       if (dataItem) {
@@ -88,17 +91,22 @@ function convertData({
       }
       return undefined;
     });
-    return [...axiesData, ...metricData];
+    return [...axisData, ...metricData];
   });
 
-  const newHeaders = [...axiesDimensions, ..._.map(series, (serie) => {
-    const enrichedSerie = { ...serie, ...collapsedColumns };
+  const newHeaders = [...axisDimensions, ..._.map(series, (serie) => {
+    const collapse = _.isArray(collaspsedColumns) ?
+      _.merge(...collaspsedColumns) : collaspsedColumns;
+    const enrichedSerie = { ...serie, ...collapse };
     // Translate enum id to string here and then get newHeaders
     const name = nameTemplate(enrichedSerie);
     const serieName = _.has(seriesMapper, name) ? _.uniqueId(name) : name;
 
     _.extend(seriesMapper, {
-      [serieName]: enrichedSerie,
+      [serieName]: {
+        serie: enrichedSerie,
+        metric,
+      },
     });
 
     return serieName;
@@ -110,12 +118,74 @@ function convertData({
   });
 }
 
+function joinResults({
+  results,
+  axisDimensions,
+}) {
+  const concatHeaders = _.map(results, ({ source }) => _.slice(source[0], axisDimensions.length));
+  const counter = _.countBy(concatHeaders);
+  // update serieName for duplicate
+  _.each(results, ({ source, seriesMapper }) => {
+    _.each(_.slice(source[0], axisDimensions.length), (header, index) => {
+      if (_.get(counter, header) > 1) {
+        const name = _.uniqueId(header);
+        source[index + axisDimensions.length] = name; //eslint-disable-line
+        seriesMapper[name] = seriesMapper[header]; // eslint-disable-line
+        delete seriesMapper[header]; //eslint-disable-line
+      }
+    });
+  });
+
+  // merge results
+  const mergedResult = _.reduce(results, (memo, result) => {
+    if (_.isEmpty(memo)) {
+      return result;
+    }
+
+    const { source, seriesMapper } = result;
+    const { source: memoSource, seriesMapper: memoSeriesMapper } = memo;
+    const headers = source[0].concat(memoSource[0].slice(axisDimensions.length));
+    const srcIndexTag = 'indextag#1';
+    const memoIndexTag = 'indextag#2';
+    const srcObj = _.map(source.slice(1), (item, index) =>
+      _.zipObject([...source[0], srcIndexTag], [...item, index / source.length]));
+    const memoSrcObj = _.map(memoSource.slice(1), (item, index) =>
+      _.zipObject([...memoSource[0], memoIndexTag], [...item, index / memoSource.length]));
+    const groupedObjs = _.groupBy(
+      memoSrcObj.concat(srcObj),
+      item => JSON.stringify(_.pick(item, axisDimensions)),
+    );
+    const list = _.map(_.values(groupedObjs), items => _.merge(...items));
+    const sortedList = list.sort((item1, item2) => {
+      const index1 = _.at(item1, [srcIndexTag, memoIndexTag]);
+      const index2 = _.at(item2, [srcIndexTag, memoIndexTag]);
+      if (!_.isUndefined(index1[0]) && !_.isUndefined(index2[0])) {
+        return index1[0] > index2[0] ? 1 : -1;
+      }
+      if (!_.isUndefined(index1[1]) && !_.isUndefined(index2[1])) {
+        return index1[1] > index2[1] ? 1 : -1;
+      }
+      return 0;
+    });
+    const retData = _.map(sortedList, item => _.at(item, headers));
+    return {
+      source: [headers, ...retData],
+      seriesMapper: {
+        ...seriesMapper,
+        ...memoSeriesMapper,
+      },
+    };
+  }, {});
+
+  return mergedResult;
+}
+
 function fetchData({
   slicers,
   dimensions,
   metrics,
   groupDimensions,
-  axiesDimensions,
+  axisDimensions,
 }) {
   return axios.post(mtUrl, _.map(metrics, (metric) => {
     const mergedDimensions = { ...dimensions, ...metric.dimensions };
@@ -129,14 +199,9 @@ function fetchData({
   })).then(({ data = [] }) => Promise.map(data, (response, index) => convertData({
     ...response,
     groupDimensions,
-    axiesDimensions,
+    axisDimensions,
     metric: metrics[index],
-  }))).then((results) => { //eslint-disable-line
-    // const headers = _.map(results, ({ source }) => _.slice(source[0], axiesDimensions.length));
-    // const counter = _.countBy(headers);
-    // merge results and return value
-    return results[0];
-  }); // TODO: realize results merge before check in
+  }))).then(results => joinResults({ results, axisDimensions }));
 }
 
 /**
