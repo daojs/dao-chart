@@ -23,6 +23,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
     "lodash": "^4.17.5",
+    "log4js": "^2.5.3",
     "query-string": "^5.1.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
