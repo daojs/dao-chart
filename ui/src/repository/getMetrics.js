@@ -2,12 +2,20 @@ import Promise from 'bluebird';
 import _ from 'lodash';
 import axios from 'axios';
 
-const mtUrl = '';
+const mtUrl = 'http://localhost:9001/data';
 
 function dimension2Filter(area, value) { // convert dimension to filter
-  const { type, values } = value;
+  const {
+    type,
+    values,
+    start,
+    end,
+  } = value;
   if (type === 'enum') {
     return ['in', area, values];
+  }
+  if (type === 'range') {
+    return ['between', area, start, end];
   }
   return [];
 }
@@ -24,23 +32,6 @@ function convertDimensions({ slicers, dimensions }) {
   });
   return filters;
 }
-
-// function generateMetricRequest({
-//   slicers,
-//   dimensions,
-//   metric,
-// }) {
-//   const requestDimensions = convertDimensions({ slicers, dimensions })
-//     .concat(convertDimensions({ slicers, dimensions: metric.dimensions }));
-//   return {
-//     name: 'query',
-//     parameters: {
-//       metrics: metric.value,
-//       dimensions: requestDimensions,
-//     },
-//   };
-// }
-
 
 /**
  * convert data and compute dimension info
@@ -100,16 +91,17 @@ function convertData({
     return [...axiesData, ...metricData];
   });
 
-  const enrichedSerie = { ...series, ...collapsedColumns };
-  // Translate enum id to string here and then get newHeaders
-
   const newHeaders = [...axiesDimensions, ..._.map(series, (serie) => {
+    const enrichedSerie = { ...serie, ...collapsedColumns };
+    // Translate enum id to string here and then get newHeaders
     const name = nameTemplate(enrichedSerie);
     const serieName = _.has(seriesMapper, name) ? _.uniqueId(name) : name;
 
     _.extend(seriesMapper, {
       [serieName]: enrichedSerie,
     });
+
+    return serieName;
   })];
 
   return Promise.resolve({
@@ -118,7 +110,6 @@ function convertData({
   });
 }
 
-
 function fetchData({
   slicers,
   dimensions,
@@ -126,7 +117,7 @@ function fetchData({
   groupDimensions,
   axiesDimensions,
 }) {
-  axios.post(mtUrl, _.map(metrics, (metric) => {
+  return axios.post(mtUrl, _.map(metrics, (metric) => {
     const mergedDimensions = { ...dimensions, ...metric.dimensions };
     return {
       name: 'query',
@@ -135,12 +126,17 @@ function fetchData({
         dimensions: convertDimensions({ slicers, dimensions: mergedDimensions }),
       },
     };
-  })).then(responses => Promise.map(responses, (response, index) => convertData({
+  })).then(({ data = [] }) => Promise.map(data, (response, index) => convertData({
     ...response,
     groupDimensions,
     axiesDimensions,
     metric: metrics[index],
-  }))).then(results => results[0]); // TODO: realize results merge before check in
+  }))).then((results) => { //eslint-disable-line
+    // const headers = _.map(results, ({ source }) => _.slice(source[0], axiesDimensions.length));
+    // const counter = _.countBy(headers);
+    // merge results and return value
+    return results[0];
+  }); // TODO: realize results merge before check in
 }
 
 /**

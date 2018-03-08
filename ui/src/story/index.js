@@ -8,6 +8,8 @@ import { getLayout, setLayout } from '../repository';
 import Section from './section';
 import Slicers from './slicers';
 
+_.templateSettings.interpolate = /{{([\s\S]+?)}}/g; // eslint-disable-line
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const rowHeight = 30; // px
 const marginX = 10; // px

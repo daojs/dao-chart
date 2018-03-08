@@ -20,7 +20,7 @@ const styles = {
 
 const chartHeight = (sectionHeight) => {
   const height = (parseInt(sectionHeight, 10) || 0) - (sectionPadding * 2);
-  return `${_.max([height, 0])}px`;
+  return `${height < 0 ? 500 : height}px`;
 };
 
 
@@ -54,6 +54,7 @@ class Section extends Component {
       source: [],
     };
     this.seriesMapper = {};
+    this.metricMapper = {};
     /* eslint-enable */
   }
 
@@ -72,10 +73,12 @@ class Section extends Component {
   onSlicerChange(args) {
     // TODO: if there is private slicer in section, process it here
     // call parent slicer change
+    const { seriesName } = args;
     this.props.onSlicerChange({
       ...args,
       section: this.props.section,
       seriesMapper: this.seriesMapper,
+      metric: this.metricMapper[seriesName],
     });
   }
 
@@ -83,8 +86,9 @@ class Section extends Component {
     slicers = {},
     section = {},
   }) {
-    getMetrics({ slicers, section }).then(({ source, seriesMapper }) => {
+    getMetrics({ slicers, section }).then(({ source, seriesMapper, metricMapper }) => {
       this.seriesMapper = seriesMapper; // eslint-disable-line immutable/no-mutation
+      this.metricMapper = metricMapper; // eslint-disable-line immutable/no-mutation
       this.setState({ source });
     });
   }

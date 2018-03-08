@@ -4,12 +4,14 @@ import Pie from './pie';
 import Line from './line';
 import Map from './map';
 import Spin from './spine';
+import Bar from './bar';
 
 const chartMapper = {
   pie: Pie,
   line: Line,
   map: Map,
   spin: Spin,
+  bar: Bar,
 };
 
 export default class extends PureComponent {
