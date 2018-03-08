@@ -4,12 +4,6 @@ const qs = require('query-string');
 const log4js = require('log4js');
 const Boom = require('boom');
 
-log4js.configure({
-  appenders: { query: { type: 'file', filename: `./logs/query-${new Date().toLocaleDateString()}.log` } },
-  categories: { default: { appenders: ['query'], level: 'info' } }
-});
-const logger = log4js.getLogger('query');
-
 function parseDimensions(dimensions) {
   if (_.isArray(dimensions) && _.every(dimensions, d => _.isArray(d) && _.every(d, String) && _.size(d) > 2)) {
     return _.reduce(dimensions, (memo, dimension) => {
@@ -40,6 +34,8 @@ function parseDimensions(dimensions) {
 }
 
 function formatResponse(response, dimensionsToCollapse = []) {
+  const logger = log4js.getLogger('query');
+
   logger.info(`[response][raw]: ${JSON.stringify(response)}`);
 
   const data = _.flatMap(response, item => _.map(item.DataPoints, dataPoint => [
@@ -62,6 +58,8 @@ const botanaApiDomain = 'botanametricsservice.kpdeus2.p.azurewebsites.net';
 const botanaApiPath = 'api/Metrics/Get';
 
 module.exports = async function(parameters) {
+  const logger = log4js.getLogger('query');
+
   logger.info(`[parameters] ${JSON.stringify(parameters)}`);
 
   const { metrics, dimensions } = parameters;

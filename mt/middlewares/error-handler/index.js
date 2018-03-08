@@ -1,9 +1,15 @@
 const Boom = require('boom');
+const log4js = require('log4js');
 
 module.exports = () => async(ctx, next) => {
   try {
     await next();
   } catch (err) {
+    const logger = log4js.getLogger('common');
+
+    logger.error(`[context] ${JSON.stringify(ctx)}`);
+    logger.error(`[detail] ${err.toString()}`);
+
     if (Boom.isBoom(err)) {
       const { output } = err;
       const { payload } = output;

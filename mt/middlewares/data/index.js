@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const Boom = require('boom');
 const _ = require('lodash');
 
-async function handleSingleQuery(query) {
+async function handleSingleRequest(query) {
   const { name, parameters } = query;
 
   if (_.isEmpty(name) || !_.isString(name)) {
@@ -22,10 +22,10 @@ module.exports = () => async function(ctx, next) {
   const { body } = ctx.request;
 
   if (_.isArray(body)) {
-    ctx.body = await Promise.map(body, async q => handleSingleQuery(q));
+    ctx.body = await Promise.map(body, async q => handleSingleRequest(q));
     await next();
   } else {
-    ctx.body = await handleSingleQuery(ctx.request.body);
+    ctx.body = await handleSingleRequest(ctx.request.body);
     await next();
   }
 };
