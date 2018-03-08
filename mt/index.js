@@ -7,17 +7,20 @@ const Boom = require('boom');
 const koaBody = require('koa-body');
 
 const schema = require('./schema');
-const data = require('./data');
+const errorHandler = require('./middlewares/error-handler');
+const data = require('./middlewares/data');
 
 const app = new Koa();
 const router = new Router();
+
+app.use(errorHandler());
 
 router.all('/graphql', graphqlHTTP({
   schema: schema,
   graphiql: true
 }));
 
-router.post('/data', koaBody(), data);
+router.post('/data', koaBody(), data());
 
 app.use(router.routes()).use(router.allowedMethods({
   throw: false,

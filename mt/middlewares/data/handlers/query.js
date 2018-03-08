@@ -2,9 +2,10 @@ const rp = require('request-promise');
 const _ = require('lodash');
 const qs = require('query-string');
 const log4js = require('log4js');
+const Boom = require('boom');
 
 log4js.configure({
-  appenders: { query: { type: 'file', filename: './query.log' } },
+  appenders: { query: { type: 'file', filename: `./logs/query-${new Date().toLocaleDateString()}.log` } },
   categories: { default: { appenders: ['query'], level: 'info' } }
 });
 const logger = log4js.getLogger('query');
@@ -35,7 +36,7 @@ function parseDimensions(dimensions) {
 }
 
 function formatResponse(response, dimensionsToCollapse = []) {
-  logger.info(`[response]: ${JSON.stringify(response)}`);
+  logger.info(`[response][raw]: ${JSON.stringify(response)}`);
 
   const data = _.flatMap(response, item => _.map(item.DataPoints, dataPoint => [
     dataPoint.Value,
@@ -57,7 +58,14 @@ const botanaApiDomain = 'botanametricsservice.kpdeus2.p.azurewebsites.net';
 const botanaApiPath = 'api/Metrics/Get';
 
 module.exports = async function(parameters) {
+  logger.info(`[parameters] ${JSON.stringify(parameters)}`);
+
   const { metrics, dimensions } = parameters;
+
+  if (_.isEmpty(metrics)) {
+    throw Boom.badRequest(`Missing metrics in your parameters(${JSON.stringify(parameters)}`);
+  }
+
   const dimensionsParsed = parseDimensions(dimensions);
   const queryString = qs.stringify({
     metrics,
@@ -70,10 +78,19 @@ module.exports = async function(parameters) {
   logger.info(`[request]: ${uri}`);
 
   const dimensionsToCollapse = _.map(_.filter(dimensions, { 0: 'eq' }), 1);
+
   const response = formatResponse(await rp({
     uri,
     json: true
+  }).catch(err => {
+    logger.error(`[errored request] ${uri}`);
+    logger.error(`[errored detail] ${err.toString()}`);
+    throw Boom.serverUnavailable('Error from Botana service', {
+      data: err
+    });
   }), dimensionsToCollapse);
+
+  logger.info(`[response] ${JSON.stringify(response)}`);
 
   return response;
 };
