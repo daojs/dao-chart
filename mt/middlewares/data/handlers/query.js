@@ -11,28 +11,32 @@ log4js.configure({
 const logger = log4js.getLogger('query');
 
 function parseDimensions(dimensions) {
-  return _.reduce(dimensions, (memo, dimension) => {
-    const [operator, dimensionId, ...dimensionValues] = dimension;
+  if (_.isArray(dimensions) && _.every(dimensions, d => _.isArray(d) && _.every(d, String) && _.size(d) > 2)) {
+    return _.reduce(dimensions, (memo, dimension) => {
+      const [operator, dimensionId, ...dimensionValues] = dimension;
 
-    if (dimensionId === 'time') {
-      const [start, end] = dimensionValues;
-      return _.defaults({}, { start, end }, memo);
-    }
+      if (dimensionId === 'time') {
+        const [start, end] = dimensionValues;
+        return _.defaults({}, { start, end }, memo);
+      }
 
-    if (operator === 'in') {
-      return _.defaults({}, {
-        tagset: _.defaults({}, { [dimensionId]: _.head(dimensionValues) }, memo.tagset || {})
-      }, memo);
-    }
+      if (operator === 'in') {
+        return _.defaults({}, {
+          tagset: _.defaults({}, { [dimensionId]: _.head(dimensionValues) }, memo.tagset || {})
+        }, memo);
+      }
 
-    if (operator === 'eq') {
-      return _.defaults({}, {
-        tagset: _.defaults({}, { [dimensionId]: [_.head(dimensionValues)] }, memo.tagset || {})
-      }, memo);
-    }
+      if (operator === 'eq') {
+        return _.defaults({}, {
+          tagset: _.defaults({}, { [dimensionId]: [_.head(dimensionValues)] }, memo.tagset || {})
+        }, memo);
+      }
 
-    return memo;
-  }, {});
+      return memo;
+    }, {});
+  }
+
+  throw Boom.badRequest(`inValid dimensions ${JSON.stringify(dimensions)}`);
 }
 
 function formatResponse(response, dimensionsToCollapse = []) {
@@ -42,13 +46,13 @@ function formatResponse(response, dimensionsToCollapse = []) {
     dataPoint.Value,
     ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
     dataPoint.Timestamp
-  ]));
+  ])).slice(0, 2);
 
   const firstData = _.result(_.head(response), 'SerieId');
 
   const meta = {
     headers: [firstData.Metrics, ..._.xor(_.keys(firstData.TagSet), dimensionsToCollapse), 'time'],
-    collaspsedColumns: _.map(dimensionsToCollapse, dKey => ({ [dKey]: firstData.TagSet[dKey] }))
+    collaspsedColumns: _.reduce(dimensionsToCollapse, (memo, dKey) => _.defaults({}, { [dKey]: firstData.TagSet[dKey] }, memo), {})
   };
 
   return { data, meta };
