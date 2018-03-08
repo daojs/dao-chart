@@ -2,6 +2,7 @@ const Koa = require('koa');
 const serve = require('koa-static');
 const Router = require('koa-router');
 const graphqlHTTP = require('koa-graphql');
+const compress = require('koa-compress');
 const Boom = require('boom');
 const koaBody = require('koa-body');
 
@@ -25,5 +26,7 @@ app.use(router.routes()).use(router.allowedMethods({
 }));
 
 app.use(serve('../target'));
+
+app.use(compress());
 
 module.exports = app.listen(9001);

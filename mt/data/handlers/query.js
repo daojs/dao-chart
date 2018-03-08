@@ -1,6 +1,13 @@
 const rp = require('request-promise');
 const _ = require('lodash');
 const qs = require('query-string');
+const log4js = require('log4js');
+
+log4js.configure({
+  appenders: { query: { type: 'file', filename: './query.log' } },
+  categories: { default: { appenders: ['query'], level: 'info' } }
+});
+const logger = log4js.getLogger('query');
 
 function parseDimensions(dimensions) {
   return _.reduce(dimensions, (memo, dimension) => {
@@ -28,11 +35,13 @@ function parseDimensions(dimensions) {
 }
 
 function formatResponse(response, dimensionsToCollapse = []) {
-  const data = _.map(response, item => [
-    _.head(item.DataPoints).Value,
+  logger.info(`[response]: ${JSON.stringify(response)}`);
+
+  const data = _.flatMap(response, item => _.map(item.DataPoints, dataPoint => [
+    dataPoint.Value,
     ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
-    _.head(item.DataPoints).Timestamp
-  ]).slice(0, 4);
+    dataPoint.Timestamp
+  ]));
 
   const firstData = _.result(_.head(response), 'SerieId');
 
@@ -57,6 +66,8 @@ module.exports = async function(parameters) {
     tagset: JSON.stringify(dimensionsParsed.tagset)
   });
   const uri = `http://${botanaApiDomain}/${botanaApiPath}?${queryString}&fields=[]`;
+
+  logger.info(`[request]: ${uri}`);
 
   const dimensionsToCollapse = _.map(_.filter(dimensions, { 0: 'eq' }), 1);
   const response = formatResponse(await rp({
