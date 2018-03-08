@@ -32,7 +32,7 @@ function formatResponse(response, dimensionsToCollapse = []) {
     _.head(item.DataPoints).Value,
     ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
     _.head(item.DataPoints).Timestamp
-  ]).slice(0, 4);
+  ]);
 
   const firstData = _.result(_.head(response), 'SerieId');
 
