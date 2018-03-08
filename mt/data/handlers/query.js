@@ -35,7 +35,7 @@ function parseDimensions(dimensions) {
 }
 
 function formatResponse(response, dimensionsToCollapse = []) {
-  logger.info(`[response]: ${response}`);
+  logger.info(`[response]: ${JSON.stringify(response)}`);
 
   const data = _.flatMap(response, item => _.map(item.DataPoints, dataPoint => [
     dataPoint.Value,
