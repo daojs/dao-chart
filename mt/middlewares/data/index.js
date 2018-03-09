@@ -13,9 +13,13 @@ async function handleSingleRequest(query) {
     throw Boom.badRequest('Missing "parameters"');
   }
 
-  const handle = require(`./handlers/${name}.js`);
+  try {
+    const handle = require(`./handlers/${name}.js`);
 
-  return handle(parameters);
+    return handle(parameters);
+  } catch (err) {
+    throw Boom.notImplemented(`The handler for name: ${name} is not implemented yet.`);
+  }
 }
 
 module.exports = () => async function(ctx, next) {

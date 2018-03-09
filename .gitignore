@@ -59,3 +59,4 @@ typings/
 
 # target folder
 target/
+mt/config/dev.json

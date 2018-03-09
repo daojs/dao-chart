@@ -5,27 +5,19 @@ const graphqlHTTP = require('koa-graphql');
 const compress = require('koa-compress');
 const Boom = require('boom');
 const koaBody = require('koa-body');
-const log4js = require('log4js');
 
 const schema = require('./schema');
+const getConfig = require('./utils/get-config');
+
+// middlewares
 const errorHandler = require('./middlewares/error-handler');
 const data = require('./middlewares/data');
-
-log4js.configure({
-  appenders: {
-    query: { type: 'file', filename: `./logs/query-${new Date().toLocaleDateString()}.log` },
-    common: { type: 'file', filename: `./logs/common-${new Date().toLocaleDateString()}.log` }
-  },
-  categories: {
-    default: { appenders: ['common'], level: 'info' },
-    common: { appenders: ['common'], level: 'info' },
-    query: { appenders: ['query'], level: 'info' }
-  }
-});
+const logger = require('./middlewares/logger');
 
 const app = new Koa();
 const router = new Router();
 
+app.use(logger());
 app.use(errorHandler());
 
 router.all('/graphql', graphqlHTTP({
@@ -45,4 +37,4 @@ app.use(serve('../target'));
 
 app.use(compress());
 
-module.exports = app.listen(9001);
+module.exports = app.listen(getConfig('port'));
