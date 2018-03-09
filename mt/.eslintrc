@@ -1,7 +1,35 @@
 {
-  "plugins": ["node", "lodash"],
+  "plugins": ["node", "lodash", "fp"],
   "extends": ["eslint:recommended", "plugin:node/recommended", "koa", "plugin:lodash/canonical"],
   "rules": {
-    "lodash/prefer-lodash-method": [2, {"ignoreObjects": ["Promise"]}]
+    "lodash/prefer-lodash-method": [2, {"ignoreObjects": ["Promise"]}],
+    "fp/no-arguments": "error",
+    "fp/no-class": "error",
+    "fp/no-delete": "error",
+    "fp/no-events": "error",
+    "fp/no-get-set": "error",
+    "fp/no-let": "error",
+    "fp/no-loops": "error",
+    "fp/no-mutating-assign": "error",
+    "fp/no-mutating-methods": "error",
+    "fp/no-mutation": ["error", {
+      "exceptions": [
+        {
+          "object": "module",
+          "property": "exports"
+        },
+        {
+          "object": "ctx"
+        }
+      ]
+    }],
+    "fp/no-nil": 0,
+    "fp/no-proxy": "error",
+    "fp/no-rest-parameters": 0,
+    "fp/no-this": "error",
+    "fp/no-throw": 0,
+    "fp/no-unused-expression": 0,
+    "fp/no-valueof-field": "error",
+    "no-var": "error"
   }
 }
