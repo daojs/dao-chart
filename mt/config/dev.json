@@ -1,3 +1,5 @@
 {
-  "port": 9001
+  "port": 9001,
+  "botana.metricsservice.domain": "botanametricsservice.kpdeus2.p.azurewebsites.net",
+  "botana.metricsservice.path": "api/Metrics/Get"
 }
