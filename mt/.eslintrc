@@ -25,7 +25,7 @@
     }],
     "fp/no-nil": 0,
     "fp/no-proxy": "error",
-    "fp/no-rest-parameters": "warn",
+    "fp/no-rest-parameters": 0,
     "fp/no-this": "error",
     "fp/no-throw": 0,
     "fp/no-unused-expression": 0,

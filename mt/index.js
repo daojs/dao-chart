@@ -7,6 +7,7 @@ const Boom = require('boom');
 const koaBody = require('koa-body');
 
 const schema = require('./schema');
+const getConfig = require('./utils/get-config');
 
 // middlewares
 const errorHandler = require('./middlewares/error-handler');
@@ -36,4 +37,4 @@ app.use(serve('../target'));
 
 app.use(compress());
 
-module.exports = app.listen(9001);
+module.exports = app.listen(getConfig('port'));
