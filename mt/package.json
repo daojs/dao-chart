@@ -33,6 +33,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-koa": "^2.0.2",
     "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-fp": "^2.3.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-lodash": "^2.6.1",
     "eslint-plugin-mocha": "^4.11.0",

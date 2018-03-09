@@ -4,6 +4,8 @@ const qs = require('query-string');
 const log4js = require('log4js');
 const Boom = require('boom');
 
+const getConfig = require('../../../utils/get-config');
+
 function parseDimensions(dimensions) {
   if (_.isArray(dimensions) && _.every(dimensions, d => _.isArray(d) && _.every(d, String) && _.size(d) > 2)) {
     return _.reduce(dimensions, (memo, dimension) => {
@@ -42,7 +44,7 @@ function formatResponse(response, dimensionsToCollapse = []) {
     dataPoint.Value,
     ..._.values(_.omit(item.SerieId.TagSet, dimensionsToCollapse)),
     dataPoint.Timestamp
-  ])).slice(0, 2);
+  ]));
 
   const firstData = _.result(_.head(response), 'SerieId');
 
@@ -54,8 +56,8 @@ function formatResponse(response, dimensionsToCollapse = []) {
   return { data, meta };
 }
 
-const botanaApiDomain = 'botanametricsservice.kpdeus2.p.azurewebsites.net';
-const botanaApiPath = 'api/Metrics/Get';
+const botanaApiDomain = getConfig('botana.metricsservice.domain');
+const botanaApiPath = getConfig('botana.metricsservice.path');
 
 module.exports = async function(parameters) {
   const logger = log4js.getLogger('query');

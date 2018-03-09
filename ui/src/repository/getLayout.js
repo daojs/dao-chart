@@ -9,6 +9,9 @@ const layoutStore = {
       i: '2', x: 6, y: 0, w: 6, h: 10,
     },
   ],
+  10000: [{
+    i: '1', x: 0, y: 0, w: 12, h: 20,
+  }],
 };
 
 export function getLayout(storyId) {
