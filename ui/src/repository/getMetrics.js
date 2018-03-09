@@ -60,8 +60,10 @@ function convertData({
 }) {
   const results = [];
   const series = [];
+  const collapse = _.isArray(collaspsedColumns) ?
+    _.merge(...collaspsedColumns) : collaspsedColumns;
   _.each(data, (item) => {
-    const obj = _.zipObject(headers, item);
+    const obj = { ..._.zipObject(headers, item), ...collapse };
     const axisDim = _.pick(obj, axisDimensions);
     const groupDim = _.pick(obj, [...groupDimensions, metric.value]);
     const result = _.find(results, axisDim);
@@ -95,8 +97,6 @@ function convertData({
   });
 
   const newHeaders = [...axisDimensions, ..._.map(series, (serie) => {
-    const collapse = _.isArray(collaspsedColumns) ?
-      _.merge(...collaspsedColumns) : collaspsedColumns;
     const enrichedSerie = { ...serie, ...collapse };
     // Translate enum id to string here and then get newHeaders
     const name = nameTemplate(enrichedSerie);
@@ -129,7 +129,7 @@ function joinResults({
     _.each(_.slice(source[0], axisDimensions.length), (header, index) => {
       if (_.get(counter, header) > 1) {
         const name = _.uniqueId(header);
-        source[index + axisDimensions.length] = name; //eslint-disable-line
+        source[0][index + axisDimensions.length] = name; //eslint-disable-line
         seriesMapper[name] = seriesMapper[header]; // eslint-disable-line
         delete seriesMapper[header]; //eslint-disable-line
       }

@@ -51,7 +51,12 @@ export default class Line extends PureComponent {
     };
 
     return (
-      <ReactEcharts option={option} onEvents={onEvents} {...this.props} />
+      <ReactEcharts
+        option={option}
+        notMerge={true} //eslint-disable-line
+        onEvents={onEvents}
+        {...this.props}
+      />
     );
   }
 }
