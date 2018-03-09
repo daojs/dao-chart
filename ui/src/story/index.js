@@ -6,7 +6,9 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { getLayout, setLayout } from '../repository';
 import Section from './section';
-import Slicers from './slicers';
+import Slicers from '../slicers';
+
+_.templateSettings.interpolate = /{{([\s\S]+?)}}/g; // eslint-disable-line
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const rowHeight = 30; // px
@@ -24,6 +26,7 @@ export default class Story extends Component {
   static propTypes = {
     description: PropTypes.string,
     slicers: PropTypes.objectOf(any),
+    slicerMeta: PropTypes.objectOf(any),
     items: PropTypes.arrayOf(PropTypes.object),
     id: PropTypes.number.isRequired,
   }
@@ -31,6 +34,10 @@ export default class Story extends Component {
   static defaultProps = {
     description: '',
     slicers: {},
+    slicerMeta: {
+      slicers: [],
+      metric: '',
+    },
     items: [],
   }
 
@@ -52,13 +59,23 @@ export default class Story extends Component {
       });
   }
 
-  onSlicerChange = (args) => {
+  onSlicerChange = (slicers) => {
+    this.setState({
+      slicers: _.defaultsDeep({}, slicers, this.state.slicers),
+    });
+  }
+
+  onDrill = (args) => {
   // update slicer here
-    const { dimensionMap, dataObj } = args;
+  // move to section, just merge new slicer here include values and others
+    const { serieInfo, dataObj, section } = args;
     const slicers = _.cloneDeep(this.state.slicers);
 
-    _.each(dataObj, (val, dim) => {
-      if (dimensionMap[dim].toSlicer) {
+    const data = { ...serieInfo.serie, ...dataObj };
+    const metricDimensions = _.get(serieInfo, 'metric.dimensions', {});
+    const dimensionMap = { ...section.dimensions, ...metricDimensions };
+    _.each(data, (val, dim) => {
+      if (_.get(dimensionMap, `${dim}.toSlicer`)) {
         _.set(slicers, `${dimensionMap[dim].toSlicer}.value.values`, [val]);
       }
     });
@@ -77,7 +94,11 @@ export default class Story extends Component {
     return (
       <React.Fragment>
         <h1>{this.props.description}</h1>
-        <Slicers slicers={this.state.slicers} />
+        <Slicers
+          slicers={this.state.slicers}
+          meta={this.props.slicerMeta}
+          onSlicerChange={this.onSlicerChange}
+        />
         <ResponsiveReactGridLayout
           className="layout"
           layouts={{ lg: this.state.layout }}
@@ -91,7 +112,7 @@ export default class Story extends Component {
           {_.map(this.props.items, section => (
             <div key={section.id}>
               <Section
-                onSlicerChange={this.onSlicerChange}
+                onSlicerChange={this.onDrill}
                 section={section}
                 slicers={this.state.slicers}
                 style={{

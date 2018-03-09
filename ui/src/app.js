@@ -6,6 +6,8 @@ import ReactGridLayout from 'react-grid-layout';
 import daoTheme1 from './assets/DaoTheme1.json';
 import daoTheme2 from './assets/DaoTheme2.json';
 import daoTheme3 from './assets/DaoTheme3.json';
+import Story from './story/index';
+import storyConfig from '../stories/sodexo.story.config';
 
 export default class App extends Component {
   constructor(props) {
@@ -40,30 +42,33 @@ export default class App extends Component {
     };
 
     return (
-      <ReactGridLayout className="layout" cols={12} rowHeight={150} width={1200}>
-        <div
-          key="a"
-          data-grid={{
-            x: 0, y: 0, w: 5, h: 2,
-        }}
-        >
-          <ReactEcharts
-            option={option}
-            theme="theme1"
-          />
-        </div>
-        <div
-          key="b"
-          data-grid={{
-            x: 6, y: 0, w: 5, h: 2,
-        }}
-        >
-          <ReactEcharts
-            option={option}
-            theme="theme2"
-          />
-        </div>
-      </ReactGridLayout>
+      <div>
+        <ReactGridLayout className="layout" cols={12} rowHeight={150} width={1200}>
+          <div
+            key="a"
+            data-grid={{
+              x: 0, y: 0, w: 5, h: 2,
+          }}
+          >
+            <ReactEcharts
+              option={option}
+              theme="theme1"
+            />
+          </div>
+          <div
+            key="b"
+            data-grid={{
+              x: 6, y: 0, w: 5, h: 2,
+          }}
+          >
+            <ReactEcharts
+              option={option}
+              theme="theme2"
+            />
+          </div>
+        </ReactGridLayout>
+        <Story {...storyConfig} />
+      </div>
     );
   }
 }
