@@ -1,20 +1,29 @@
+/* eslint-disable fp/no-let, fp/no-mutation */
 const _ = require('lodash');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const jsonfile = require('jsonfile');
+const nodeCleanup = require('node-cleanup');
+
+const storeDir = path.resolve(os.homedir(), '.dao-chart');
+const storePath = path.resolve(storeDir, 'layout.json');
+
+mkdirp.sync(storeDir);
+const layoutStore = fs.readFileSync(storePath, {
+  flag: 'a+',
+  encoding: 'utf8'
+}) || {};
+
+nodeCleanup(() => {
+  jsonfile.writeFileSync(storePath, layoutStore);
+});
 
 const colsInRow = 12;
 const chartsInRow = 2;
 const colsOfChart = _.floor(colsInRow / chartsInRow);
 const rowsOfChart = 10;
-
-const layoutStore = {
-  12345678: [
-    {
-      i: '1', x: 0, y: 0, w: 6, h: 10
-    },
-    {
-      i: '2', x: 6, y: 0, w: 6, h: 10
-    }
-  ]
-};
 
 const fetchLayout = ({
   storyId,
@@ -41,6 +50,7 @@ const fetchLayout = ({
   });
   const newStoryLayout = _.union(storyLayout, newSectionLayouts);
   layoutStore[storyId] = newStoryLayout;
+  jsonfile.writeFileSync(storePath, layoutStore);
   return newStoryLayout;
 };
 

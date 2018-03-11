@@ -16,6 +16,7 @@
     "bluebird": "^3.5.1",
     "boom": "^7.2.0",
     "graphql": "^0.13.1",
+    "jsonfile": "^4.0.0",
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
     "koa-compress": "^2.0.0",
@@ -24,6 +25,8 @@
     "koa-static": "^4.0.2",
     "lodash": "^4.17.5",
     "log4js": "^2.5.3",
+    "mkdirp": "^0.5.1",
+    "node-cleanup": "^2.1.2",
     "query-string": "^5.1.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"

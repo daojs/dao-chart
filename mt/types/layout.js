@@ -6,7 +6,7 @@ const {
 } = require('graphql');
 const {
   fetchLayout
-} = require('./layout-store');
+} = require('../stores/layout-store');
 
 const sectionLayoutType = new GraphQLObjectType({
   name: 'sectionLayoutType',
