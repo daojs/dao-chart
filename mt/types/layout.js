@@ -2,10 +2,12 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLList,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLBool
 } = require('graphql');
 const {
-  fetchLayout
+  fetchLayout,
+  saveLayout
 } = require('../stores/layout-store');
 
 const sectionLayoutType = new GraphQLObjectType({
@@ -32,8 +34,20 @@ const getLayout = {
   }
 };
 
+const setLayout = {
+  type: GraphQLBool,
+  args: {
+    storyId: { type: GraphQLString },
+    storyLayout: { type: storyLayoutType }
+  },
+  resolve(parent, { storyId, storyLayout }) {
+    return saveLayout({ storyId, storyLayout });
+  }
+};
+
 module.exports = {
   sectionLayoutType,
   storyLayoutType,
-  getLayout
+  getLayout,
+  setLayout
 };

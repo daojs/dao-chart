@@ -6,6 +6,9 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const jsonfile = require('jsonfile');
 const nodeCleanup = require('node-cleanup');
+const log4js = require('log4js');
+
+const logger = log4js.getLogger('layout');
 
 const storeDir = path.resolve(os.homedir(), '.dao-chart');
 const storePath = path.resolve(storeDir, 'layout.json');
@@ -50,10 +53,28 @@ const fetchLayout = ({
   });
   const newStoryLayout = _.union(storyLayout, newSectionLayouts);
   layoutStore[storyId] = newStoryLayout;
-  jsonfile.writeFileSync(storePath, layoutStore);
+  jsonfile.writeFile(storePath, layoutStore, err => {
+    if (err) {
+      logger.error(err);
+    }
+  });
   return newStoryLayout;
 };
 
+const saveLayout = ({
+  storyId,
+  storyLayout
+}) => {
+  layoutStore[storyId] = storyLayout;
+  jsonfile.writeFile(storePath, layoutStore, err => {
+    if (err) {
+      logger.error(err);
+    }
+  });
+  return true;
+};
+
 module.exports = {
-  fetchLayout
+  fetchLayout,
+  saveLayout
 };
