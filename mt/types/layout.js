@@ -1,53 +1,59 @@
 const {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLList,
   GraphQLInt,
-  GraphQLBool
+  GraphQLBoolean
 } = require('graphql');
 const {
-  fetchLayout,
-  saveLayout
+  getLayout,
+  setLayout
 } = require('../stores/layout-store');
 
-const sectionLayoutType = new GraphQLObjectType({
-  name: 'sectionLayoutType',
-  fields: {
-    i: {type: GraphQLString},
-    x: {type: GraphQLInt},
-    y: {type: GraphQLInt},
-    w: {type: GraphQLInt},
-    h: {type: GraphQLInt}
-  }
-});
+const sectionLayoutFields = {
+  i: {type: GraphQLString},
+  x: {type: GraphQLInt},
+  y: {type: GraphQLInt},
+  w: {type: GraphQLInt},
+  h: {type: GraphQLInt}
+};
 
-const storyLayoutType = new GraphQLList(sectionLayoutType);
-
-const getLayout = {
-  type: storyLayoutType,
+const getLayoutType = {
+  type: new GraphQLList(
+    new GraphQLObjectType({
+      name: 'sectionLayoutType',
+      fields: sectionLayoutFields
+    })
+  ),
   args: {
     storyId: { type: GraphQLString },
     sectionIds: { type: new GraphQLList(GraphQLString) }
   },
   resolve(parent, { storyId, sectionIds }) {
-    return fetchLayout({ storyId, sectionIds });
+    return getLayout({ storyId, sectionIds });
   }
 };
 
-const setLayout = {
-  type: GraphQLBool,
+const setLayoutType = {
+  type: GraphQLBoolean,
   args: {
     storyId: { type: GraphQLString },
-    storyLayout: { type: storyLayoutType }
+    storyLayout: {
+      type: new GraphQLList(
+        new GraphQLInputObjectType({
+          name: 'sectionLayoutInputType',
+          fields: sectionLayoutFields
+        })
+      )
+    }
   },
   resolve(parent, { storyId, storyLayout }) {
-    return saveLayout({ storyId, storyLayout });
+    return setLayout({ storyId, storyLayout });
   }
 };
 
 module.exports = {
-  sectionLayoutType,
-  storyLayoutType,
-  getLayout,
-  setLayout
+  getLayoutType,
+  setLayoutType
 };

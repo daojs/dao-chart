@@ -7,17 +7,23 @@ const mkdirp = require('mkdirp');
 const jsonfile = require('jsonfile');
 const nodeCleanup = require('node-cleanup');
 const log4js = require('log4js');
-
 const logger = log4js.getLogger('layout');
 
 const storeDir = path.resolve(os.homedir(), '.dao-chart');
 const storePath = path.resolve(storeDir, 'layout.json');
 
-mkdirp.sync(storeDir);
-const layoutStore = fs.readFileSync(storePath, {
-  flag: 'a+',
-  encoding: 'utf8'
-}) || {};
+const layoutStore = (() => {
+  try {
+    mkdirp.sync(storeDir);
+    return JSON.parse(fs.readFileSync(storePath, {
+      flag: 'a+',
+      encoding: 'utf8'
+    }));
+  } catch (err) {
+    logger.error(err);
+    return {};
+  }
+})();
 
 nodeCleanup(() => {
   jsonfile.writeFileSync(storePath, layoutStore);
@@ -28,7 +34,7 @@ const chartsInRow = 2;
 const colsOfChart = _.floor(colsInRow / chartsInRow);
 const rowsOfChart = 10;
 
-const fetchLayout = ({
+const getLayout = ({
   storyId,
   sectionIds
 }) => {
@@ -61,7 +67,7 @@ const fetchLayout = ({
   return newStoryLayout;
 };
 
-const saveLayout = ({
+const setLayout = ({
   storyId,
   storyLayout
 }) => {
@@ -75,6 +81,6 @@ const saveLayout = ({
 };
 
 module.exports = {
-  fetchLayout,
-  saveLayout
+  getLayout,
+  setLayout
 };
