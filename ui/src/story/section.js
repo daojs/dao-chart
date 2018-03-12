@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes, { any } from 'prop-types';
 import _ from 'lodash';
-import Radium from 'radium';
 import { getMetrics } from '../repository';
 import Chart from '../component';
 
@@ -9,12 +8,25 @@ const sectionPadding = 12; // px
 
 const styles = {
   section: {
+    pposition: 'relative',
     border: '1px solid #eee',
     padding: `${sectionPadding}px`,
     boxSizing: 'border-box',
-    ':hover': {
-      boxShadow: '0 0 5px #aaa',
-    },
+  },
+  sectionHover: {
+    boxShadow: '0 0 5px #aaa',
+    cursor: 'move',
+  },
+  resizerMark: {
+    position: 'absolute',
+    right: 1,
+    bottom: 1,
+    marginTop: `-${sectionPadding}px`,
+    marginLeft: `-${sectionPadding}px`,
+    width: `${sectionPadding}px`,
+    height: `${sectionPadding}px`,
+    backgroundColor: '#fff',
+    zIndex: 10,
   },
 };
 
@@ -33,7 +45,7 @@ const chartHeight = (sectionHeight) => {
  * },
  * onSlicerChange = function
 */
-class Section extends Component {
+export default class Section extends Component {
   static propTypes = {
     section: PropTypes.objectOf(any).isRequired,
     slicers: PropTypes.objectOf(any),
@@ -95,21 +107,44 @@ class Section extends Component {
     const { height } = this.props.style;
 
     return (
-      <div className="section" style={[styles.section, { height }]}>
-        {_.isEmpty(this.state.source) ? null :
-        <Chart
-          source={this.state.source}
-          onSlicerChange={args => this.onSlicerChange(args)}
-          title={{
-            text: description,
-          }}
-          chartType={chartType}
-          style={{
-            height: chartHeight(this.props.style.height),
-          }}
-        />}
-      </div>);
+      <div
+        className="section"
+        style={_.defaults(
+          { height },
+          styles.section,
+          this.state.hover ? styles.sectionHover : {},
+        )}
+        onMouseEnter={() => { this.setState({ hover: 'section' }); }}
+        onMouseLeave={() => { this.setState({ hover: null }); }}
+      >
+        {
+          _.isEmpty(this.state.source) ? null :
+          <div
+            role="presentation"
+            onMouseEnter={() => { this.setState({ hover: 'chart' }); }}
+            onMouseLeave={() => { this.setState({ hover: 'section' }); }}
+            // Not allowed to drag or resize a section when mouse is inside a chart
+            onMouseDown={(e) => { e.stopPropagation(); }}
+            onMouseUp={(e) => { e.stopPropagation(); }}
+          >
+            <Chart
+              source={this.state.source}
+              onSlicerChange={args => this.onSlicerChange(args)}
+              title={{
+              text: description,
+            }}
+              chartType={chartType}
+              style={{
+              height: chartHeight(this.props.style.height),
+            }}
+            />
+          </div>
+        }
+        {
+          this.state.hover === 'chart' &&
+          <div style={styles.resizerMark} />
+        }
+      </div>
+    );
   }
 }
-
-export default Radium(Section);
