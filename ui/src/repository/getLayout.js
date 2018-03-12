@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 
-const client = new GraphQLClient('/graphql', {
-  mode: 'cors',
-});
+const client = new GraphQLClient('/graphql');
 
 export function getLayout({
   storyId,
