@@ -9,11 +9,13 @@ export default class Line extends PureComponent {
     source: PropTypes.arrayOf(PropTypes.array).isRequired,
     title: PropTypes.objectOf(PropTypes.any),
     onSlicerChange: PropTypes.func,
+    hasDataZoom: PropTypes.bool,
   }
 
   static defaultProps = {
     onSlicerChange: _.noop,
     title: {},
+    hasDataZoom: false,
   }
 
   render() {
@@ -40,6 +42,24 @@ export default class Line extends PureComponent {
         dimensions,
         type: 'line',
       }),
+      dataZoom: this.props.hasDataZoom ? [{
+        type: 'slider',
+        showDataShadow: false,
+        bottom: 10,
+        height: 20,
+        borderColor: 'transparent',
+        backgroundColor: '#e2e2e2',
+        handleSize: 20,
+        handleStyle: {
+          shadowBlur: 6,
+          shadowOffsetX: 1,
+          shadowOffsetY: 2,
+          shadowColor: '#aaa',
+        },
+        labelFormatter: '',
+      }, {
+        type: 'inside',
+      }] : [],
     };
 
     const onEvents = {

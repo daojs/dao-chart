@@ -37,7 +37,7 @@ export default {
       MealName: { fromSlicer: 'MealName' },
     },
     extra: {},
-    chartType: 'line', // enrich chart type
+    chartType: 'lineWithDataZoom', // enrich chart type
     axisDimensions: ['time'], // enrich, 直观的描述是横轴是啥
     groupDimensions: ['BranchName', 'MealName', 'SKUType'], // enrich, select the dimension we want to group, sometimes we ignore some dimension to group, like age between 20 and 30, we don't want to group by age while age is not axisDeimension
     id: 1, // required in story
