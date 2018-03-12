@@ -89,6 +89,9 @@ export default class Story extends Component {
 
   onLayoutChange = (newLayout) => {
     this.setState({ layout: newLayout });
+  }
+
+  saveLayout = (newLayout) => {
     setLayout({
       storyId: this.props.id,
       storyLayout: newLayout,
@@ -113,6 +116,8 @@ export default class Story extends Component {
           margin={[marginX, marginY]}
           onDrag={this.onLayoutChange}
           onResize={this.onLayoutChange}
+          onDragStop={this.saveLayout}
+          onResizeStop={this.saveLayout}
         >
           {_.map(this.props.items, section => (
             <div key={section.id}>
