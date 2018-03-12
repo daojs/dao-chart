@@ -53,10 +53,12 @@ export default class Story extends Component {
   }
 
   componentDidMount() {
-    getLayout(this.props.id)
-      .then((layout) => {
-        this.setState({ layout });
-      });
+    getLayout({
+      storyId: this.props.id,
+      sectionIds: _.map(this.props.items, 'id'),
+    }).then((layout) => {
+      this.setState({ layout });
+    });
   }
 
   onSlicerChange = (slicers) => {
@@ -87,7 +89,10 @@ export default class Story extends Component {
 
   onLayoutChange = (newLayout) => {
     this.setState({ layout: newLayout });
-    setLayout(this.props.id, newLayout);
+    setLayout({
+      storyId: this.props.id,
+      storyLayout: newLayout,
+    });
   }
 
   render() {
