@@ -8,6 +8,7 @@ import daoTheme2 from './assets/DaoTheme2.json';
 import daoTheme3 from './assets/DaoTheme3.json';
 import Story from './story/index';
 import storyConfig from '../stories/sodexo.story.config';
+import './style/index.scss';
 
 export default class App extends Component {
   constructor(props) {

@@ -6,6 +6,7 @@ const {
 } = require('graphql');
 
 const enumTypeType = require('./types/enum-type');
+const { getLayoutType, setLayoutType } = require('./types/layout');
 
 const mockTypes = [
   { id: '1', name: 'Beijing' },
@@ -32,7 +33,9 @@ const schema = new GraphQLSchema({
             parent: _.find(mockTypes, { id: rawType.parent })
           }, rawType);
         }
-      }
+      },
+      getLayout: getLayoutType,
+      setLayout: setLayoutType
     }
   })
 });
