@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate, getDimensionSeries } from '../utils';
+import { validate, getDataOption } from '../utils';
 
 export default class Line extends PureComponent {
   static propTypes = {
@@ -18,10 +18,20 @@ export default class Line extends PureComponent {
     hasDataZoom: false,
   }
 
-  render() {
-    validate(this.props.source);
-    const dimensions = _.first(this.props.source);
-    const option = {
+  getOption() {
+    const {
+      source,
+    } = this.props;
+    const dimensions = _.first(source);
+
+    const dataOption = getDataOption({
+      source,
+      defaultSeriesOpt: {
+        type: 'line',
+      },
+    });
+
+    return _.defaultsDeep({
       title: this.props.title,
       legend: {},
       tooltip: {
@@ -38,10 +48,6 @@ export default class Line extends PureComponent {
         type: 'category',
         boundaryGap: false,
       },
-      series: getDimensionSeries({
-        dimensions,
-        type: 'line',
-      }),
       dataZoom: this.props.hasDataZoom ? [{
         type: 'slider',
         showDataShadow: false,
@@ -60,8 +66,14 @@ export default class Line extends PureComponent {
       }, {
         type: 'inside',
       }] : [],
-    };
+    }, {
+      xAxis: dataOption.axis,
+      series: dataOption.series,
+    });
+  }
 
+  render() {
+    validate(this.props.source);
     const onEvents = {
       click: args =>
         this.props.onSlicerChange(_.defaults(
@@ -72,7 +84,7 @@ export default class Line extends PureComponent {
 
     return (
       <ReactEcharts
-        option={option}
+        option={this.getOption()}
         notMerge={true} //eslint-disable-line
         onEvents={onEvents}
         {...this.props}

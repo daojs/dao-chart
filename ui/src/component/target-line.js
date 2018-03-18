@@ -10,13 +10,11 @@ export default class TargetLine extends PureComponent {
     target: PropTypes.number.isRequired,
   }
 
-  render() {
+  getOption() {
     const {
       source,
       target,
     } = this.props;
-    validate(source);
-
     const dataOption = getDataOption({
       source,
       defaultSeriesOpt: (index) => {
@@ -69,7 +67,7 @@ export default class TargetLine extends PureComponent {
       },
     });
 
-    const option = _.defaultsDeep({
+    return _.defaultsDeep({
       legend: {},
       tooltip: {
         trigger: 'axis',
@@ -85,9 +83,13 @@ export default class TargetLine extends PureComponent {
       xAxis: dataOption.axis,
       series: dataOption.series,
     });
+  }
+
+  render() {
+    validate(this.props.source);
 
     return (
-      <ReactEcharts option={option} {...this.props} />
+      <ReactEcharts option={this.getOption()} {...this.props} />
     );
   }
 }
