@@ -18,14 +18,13 @@ export default class Line extends PureComponent {
     hasDataZoom: false,
   }
 
-  getOption() {
-    const {
-      source,
-    } = this.props;
-    const dimensions = _.first(source);
+  getSource() {
+    return this.props.source;
+  }
 
+  getOption() {
     const dataOption = getDataOption({
-      source,
+      source: this.getSource(),
       defaultSeriesOpt: {
         type: 'line',
       },
@@ -36,10 +35,6 @@ export default class Line extends PureComponent {
       legend: {},
       tooltip: {
         trigger: 'axis',
-      },
-      dataset: {
-        source: this.props.source,
-        dimensions,
       },
       yAxis: {
         type: 'value',
@@ -73,11 +68,13 @@ export default class Line extends PureComponent {
   }
 
   render() {
-    validate(this.props.source);
+    const source = this.getSource();
+
+    validate(source);
     const onEvents = {
       click: args =>
         this.props.onSlicerChange(_.defaults(
-          {}, { dataObj: _.zipObject(_.first(this.props.source), args.data) },
+          {}, { dataObj: _.zipObject(_.first(source), args.data) },
           args,
         )),
     };
