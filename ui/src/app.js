@@ -8,6 +8,8 @@ import daoTheme2 from './assets/DaoTheme2.json';
 import daoTheme3 from './assets/DaoTheme3.json';
 import Story from './story/index';
 import storyConfig from '../stories/sodexo.story.config';
+import AtlasStory from './story/atlas-story';
+import InsightStoryConfig from '../stories/insight.story';
 import './style/index.scss';
 
 export default class App extends Component {
@@ -69,6 +71,7 @@ export default class App extends Component {
           </div>
         </ReactGridLayout>
         <Story {...storyConfig} />
+        <AtlasStory story={InsightStoryConfig} />
       </div>
     );
   }

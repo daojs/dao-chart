@@ -6,6 +6,7 @@ import LineWithDataZoom from './line-datazoom';
 import Map from './map';
 import Spin from './spine';
 import Bar from './bar';
+import Donut from './donut';
 
 const chartMapper = {
   pie: Pie,
@@ -14,6 +15,7 @@ const chartMapper = {
   map: Map,
   spin: Spin,
   bar: Bar,
+  donut: Donut,
 };
 
 export default class extends PureComponent {
