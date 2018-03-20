@@ -7,7 +7,7 @@ export default class Donut extends PureComponent {
   static propTypes = {
     source: PropTypes.arrayOf(PropTypes.array),
     percent: PropTypes.number,
-    title: PropTypes.string,
+    title: PropTypes.objectOf(PropTypes.any),
     subTitle: PropTypes.string,
     hasLegend: PropTypes.bool,
   }
@@ -15,7 +15,7 @@ export default class Donut extends PureComponent {
   static defaultProps = {
     source: null,
     percent: null,
-    title: '',
+    title: { text: '' },
     subTitle: '',
     hasLegend: true,
   }
@@ -34,7 +34,7 @@ export default class Donut extends PureComponent {
 
     const rawOption = {
       title: {
-        text: title,
+        text: title.text,
         subtext: subTitle,
         x: 'center',
         y: 'center',
