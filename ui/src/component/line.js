@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import _ from 'lodash';
-import { validate, getDimensionSeries } from '../utils';
+import { validate, getDataOption } from '../utils';
 
 export default class Line extends PureComponent {
   static propTypes = {
@@ -18,18 +18,23 @@ export default class Line extends PureComponent {
     hasDataZoom: false,
   }
 
-  render() {
-    validate(this.props.source);
-    const dimensions = _.first(this.props.source);
-    const option = {
+  getSource() {
+    return this.props.source;
+  }
+
+  getOption() {
+    const dataOption = getDataOption({
+      source: this.getSource(),
+      defaultSeriesOpt: {
+        type: 'line',
+      },
+    });
+
+    return _.defaultsDeep({
       title: this.props.title,
       legend: {},
       tooltip: {
         trigger: 'axis',
-      },
-      dataset: {
-        source: this.props.source,
-        dimensions,
       },
       yAxis: {
         type: 'value',
@@ -38,10 +43,6 @@ export default class Line extends PureComponent {
         type: 'category',
         boundaryGap: false,
       },
-      series: getDimensionSeries({
-        dimensions,
-        type: 'line',
-      }),
       dataZoom: this.props.hasDataZoom ? [{
         type: 'slider',
         showDataShadow: false,
@@ -60,19 +61,27 @@ export default class Line extends PureComponent {
       }, {
         type: 'inside',
       }] : [],
-    };
+    }, {
+      xAxis: dataOption.axis,
+      series: dataOption.series,
+    });
+  }
 
+  render() {
+    const source = this.getSource();
+
+    validate(source);
     const onEvents = {
       click: args =>
         this.props.onSlicerChange(_.defaults(
-          {}, { dataObj: _.zipObject(_.first(this.props.source), args.data) },
+          {}, { dataObj: _.zipObject(_.first(source), args.data) },
           args,
         )),
     };
 
     return (
       <ReactEcharts
-        option={option}
+        option={this.getOption()}
         notMerge={true} //eslint-disable-line
         onEvents={onEvents}
         {...this.props}
